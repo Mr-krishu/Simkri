@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type TouchEvent } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Navigation, Sparkles } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Navigation, Pause, Play, Sparkles } from 'lucide-react'
 
 // Wedding information lives here for easy customization.
 const WEDDING = {
@@ -176,6 +176,19 @@ function GatewayHero() {
   const container = useRef<HTMLElement>(null)
   const [fusionLoaded, setFusionLoaded] = useState(false)
   const [layeredMobileReady, setLayeredMobileReady] = useState(false)
+  const [deviceReduceMotion, setDeviceReduceMotion] = useState(false)
+  const [motionChoice, setMotionChoice] = useState<'system' | 'play' | 'pause'>('system')
+  const motionEnabled = motionChoice === 'play' || (motionChoice === 'system' && !deviceReduceMotion)
+
+  // Respect device accessibility settings by default, but let guests explicitly
+  // opt into the animated wedding scene (or pause it) on their own device.
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => setDeviceReduceMotion(media.matches)
+    sync()
+    media.addEventListener('change', sync)
+    return () => media.removeEventListener('change', sync)
+  }, [])
 
   // Load all four optimized layers before replacing the existing mobile cover.
   // If any asset is missing, the original invitation remains visible.
@@ -224,7 +237,7 @@ function GatewayHero() {
 
   return (
     <section className="hero-scroll" id="home" ref={container} aria-label="Wedding invitation introduction">
-      <div className={`hero-sticky ${fusionLoaded || layeredMobileReady ? 'fusion-loaded' : ''} ${layeredMobileReady ? 'layered-mobile-ready' : ''}`}>
+      <div className={`hero-sticky ${fusionLoaded || layeredMobileReady ? 'fusion-loaded' : ''} ${layeredMobileReady ? 'layered-mobile-ready' : ''} ${motionEnabled ? 'hero-motion-active' : 'hero-motion-paused'}`}>
         <motion.div className="sky-layer" style={{ opacity: skyOpacity }}>
           <span className="sky-sun" />
           <span className="cloud cloud-one" /><span className="cloud cloud-two" /><span className="cloud cloud-three" />
@@ -288,10 +301,23 @@ function GatewayHero() {
               <img className="mobile-scene-florals" src="/animated-hero/petals-mobile.webp" alt="" />
               <div className="mobile-scene-floating-petals">
                 <span /><span /><span /><span /><span /><span />
+                <span /><span /><span /><span />
               </div>
             </div>
           )}
         </motion.div>
+        {layeredMobileReady && (
+          <button
+            type="button"
+            className="hero-motion-toggle"
+            aria-label={motionEnabled ? 'Pause wedding animation' : 'Play wedding animation'}
+            aria-pressed={motionEnabled}
+            onClick={() => setMotionChoice(motionEnabled ? 'pause' : 'play')}
+          >
+            {motionEnabled ? <Pause size={13} aria-hidden="true" /> : <Play size={13} aria-hidden="true" />}
+            <span>{motionEnabled ? 'Pause effects' : 'Play effects'}</span>
+          </button>
+        )}
         <motion.a href="#invitation" className="scroll-cue" style={{ opacity: titleOpacity }} aria-label="Scroll down to wedding invitation">
           <span>SCROLL TO ENTER</span><ArrowDown size={16} strokeWidth={1.5}/>
         </motion.a>
