@@ -407,6 +407,88 @@ function CoupleGallery() {
   )
 }
 
+const LOVE_STORY_CHAPTERS = [
+  {
+    number: '01',
+    place: 'SECOND YEAR OF B.TECH',
+    heading: 'It started with friendship',
+    description: 'We met in the second year of college. What began as a simple friendship slowly became something special — we became best friends, without ever imagining where life would take us.',
+  },
+  {
+    number: '02',
+    place: 'AFTER COLLEGE',
+    heading: 'Different cities, different paths',
+    description: 'After graduation, life led us to different cities. Somewhere between new jobs, new routines and growing up, we slowly lost touch. But our story was far from over.',
+  },
+  {
+    number: '03',
+    place: 'CHANDIGARH',
+    heading: 'A familiar face, a new feeling',
+    description: 'Fate brought us together again in Chandigarh. We reconnected, and this time there was something more than friendship. We started talking again, even with Simran in Hyderabad and Krishna in Bangalore.',
+  },
+  {
+    number: '04',
+    place: 'BANGALORE',
+    heading: 'When everything fell into place',
+    description: 'Love — and a little luck — had other plans. Simran got a job in Bangalore, and being in the same city finally answered the question we had been carrying: could we be more than friends? We started dating. Now, we are getting married.',
+  },
+] as const
+
+function OurStory() {
+  return (
+    <section className="story-section section-padding" id="our-story" aria-labelledby="our-story-title">
+      <FloralCorner />
+      <div className="section-container story-content">
+        <motion.div
+          className="story-intro"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: .3 }}
+          transition={{ duration: .65 }}
+        >
+          <p className="eyebrow">FROM BEST FRIENDS TO FOREVER</p>
+          <h2 id="our-story-title">Our <em>story</em></h2>
+          <FlowerDivider />
+          <p className="story-intro-description">
+            We were friends first, best friends next, and somewhere along the way, love found its moment.
+          </p>
+          <div className="story-monogram" aria-hidden="true">S <span>♥</span> K</div>
+        </motion.div>
+
+        <div className="story-timeline" aria-label="The milestones in our love story">
+          {LOVE_STORY_CHAPTERS.map((chapter, index) => (
+            <motion.article
+              className="story-milestone"
+              key={chapter.number}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: .2 }}
+              transition={{ duration: .6, delay: index * .06 }}
+            >
+              <div className="story-number" aria-hidden="true">{chapter.number}</div>
+              <div className="story-milestone-content">
+                <p className="story-location">{chapter.place}</p>
+                <h3>{chapter.heading}</h3>
+                <p>{chapter.description}</p>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+      <div className="section-container">
+        <motion.p className="story-ending"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: .7 }}>
+          Some stories are worth waiting for. <span>Ours was worth finding again.</span>
+        </motion.p>
+      </div>
+      <FloralCorner flip />
+    </section>
+  )
+}
+
 function WeddingFestivitiesIntro() {
   return (
     <section className="festivities-introduction" id="celebrations">
@@ -683,7 +765,7 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const links = [
     { href: '#invitation', label: 'Our invitation' },
-    { href: '#our-moments', label: 'Our moments' },
+    { href: '#our-story', label: 'Our story' },
     { href: '#groom-traditions', label: 'Groom-side functions' },
     { href: '#bride-traditions', label: 'Bride-side functions' },
     { href: '#celebrations', label: 'Wedding day' },
@@ -710,6 +792,7 @@ function App() {
       <main>
         <Invitation />
         <CoupleGallery />
+        <OurStory />
         <WeddingFestivitiesIntro />
         <GroomSideFunctions />
         <Ceremonies />
