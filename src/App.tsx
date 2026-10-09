@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, Copy, Heart, MapPin, Menu, Navigation, Sparkles, X } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Menu, Navigation, Sparkles, X } from 'lucide-react'
 
 // Wedding information lives here for easy customization.
 const WEDDING = {
@@ -77,6 +77,7 @@ const GROOM_SIDE_EVENTS = [
 ] as const
 
 const COUPLE_PHOTOS = [
+  { src: '/photos/staircase-candid.webp', alt: 'Simran and Krishna sharing a playful moment on a staircase', caption: 'The moments between the moments' },
   { src: '/photos/scenic-traditions.webp', alt: 'Simran and Krishna together in traditional outfits outdoors', caption: 'Our adventures, together' },
   { src: '/photos/floral-celebration.webp', alt: 'Simran and Krishna standing before colourful floral decorations', caption: 'Every celebration is better with you' },
   { src: '/photos/everyday-moments.webp', alt: 'A smiling casual selfie of Simran and Krishna', caption: 'The everyday magic' },
@@ -274,11 +275,11 @@ function getIcsContent() {
   return [
     'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Simran and Krishna//Wedding Invitation//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
     'BEGIN:VEVENT', `UID:jagoo-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261206T113000Z',
-    'SUMMARY:Simran & Krishna - Jagoo', 'DESCRIPTION:Jagoo celebrations begin at 5:00 PM IST onwards. Venue to be confirmed.', 'END:VEVENT',
+    'SUMMARY:Simran & Krishna - Bride-side Jagoo', 'DESCRIPTION:Bride-side Jagoo begins at 5:00 PM IST onwards. Venue to be confirmed.', 'END:VEVENT',
     'BEGIN:VEVENT', `UID:mehndi-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261207T053000Z',
-    'SUMMARY:Simran & Krishna - Mehndi', 'DESCRIPTION:Mehndi begins at 11:00 AM IST. Venue to be confirmed.', 'END:VEVENT',
+    'SUMMARY:Simran & Krishna - Bride-side Mehndi', 'DESCRIPTION:Bride-side Mehndi begins at 11:00 AM IST. Venue to be confirmed.', 'END:VEVENT',
     'BEGIN:VEVENT', `UID:haldi-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261207T113000Z',
-    'SUMMARY:Simran & Krishna - Haldi', 'DESCRIPTION:Haldi begins at 5:00 PM IST. Venue to be confirmed.', 'END:VEVENT',
+    'SUMMARY:Simran & Krishna - Bride-side Haldi', 'DESCRIPTION:Bride-side Haldi begins at 5:00 PM IST. Venue to be confirmed.', 'END:VEVENT',
     'BEGIN:VEVENT', `UID:sikh-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261209T043000Z', 'DTEND:20261209T053000Z',
     'SUMMARY:Simran & Krishna - Sikh Wedding', `LOCATION:${location}`, 'DESCRIPTION:Sikh wedding ceremony from 10:00 AM to 11:00 AM IST. See invitation for venue map.', 'END:VEVENT',
     'BEGIN:VEVENT', `UID:hindu-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261209T103000Z',
@@ -300,23 +301,60 @@ function saveCalendar() {
 }
 
 function CoupleGallery() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const goToPhoto = (index: number) =>
+    setActiveIndex((index + COUPLE_PHOTOS.length) % COUPLE_PHOTOS.length)
+  const photo = COUPLE_PHOTOS[activeIndex]
+
   return (
     <section className="photo-gallery-section section-padding" id="our-moments">
       <div className="section-container">
-        <SectionHeading eyebrow="SIMRAN & KRISHNA" title="Our little moments" subtitle="Some of our favourite memories, before our forever begins." />
-        <div className="couple-photo-grid">
-          {COUPLE_PHOTOS.map((photo, index) => (
-            <motion.figure className="couple-photo-card" key={photo.src}
-              initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: .15 }} transition={{ duration: .65, delay: index * .08 }}>
-              <div className="couple-photo-frame">
-                <img loading="lazy" src={photo.src} alt={photo.alt}
-                  onError={(event) => { event.currentTarget.style.display = 'none' }} />
-                <span className="couple-photo-fallback" aria-hidden="true">S <i>&amp;</i> K</span>
-              </div>
-              <figcaption>{photo.caption}</figcaption>
-            </motion.figure>
-          ))}
+        <SectionHeading eyebrow="SIMRAN & KRISHNA" title="Our little moments"
+          subtitle="Seven favourite memories, one beautiful journey together." />
+        <div className="couple-carousel" role="region" aria-roledescription="carousel" aria-label="Our seven couple photographs">
+          <div className="couple-carousel-stage">
+            <button className="couple-carousel-arrow couple-carousel-arrow-left" type="button"
+              onClick={() => goToPhoto(activeIndex - 1)} aria-label="Previous photo">
+              <ChevronLeft size={24} aria-hidden="true" />
+            </button>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.figure className="couple-carousel-slide" key={photo.src}
+                initial={{ opacity: 0, x: 45, scale: .98 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -45, scale: .98 }}
+                transition={{ duration: .32, ease: 'easeOut' }}
+                drag="x" dragConstraints={{ left: 0, right: 0 }} dragElastic={.16}
+                style={{ touchAction: 'pan-y' }}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x < -65) goToPhoto(activeIndex + 1)
+                  else if (info.offset.x > 65) goToPhoto(activeIndex - 1)
+                }}>
+                <div className="couple-carousel-image">
+                  <img src={photo.src} alt={photo.alt} draggable={false}
+                    onError={(event) => { event.currentTarget.style.display = 'none' }} />
+                  <span className="couple-photo-fallback" aria-hidden="true">S <i>&amp;</i> K</span>
+                </div>
+                <figcaption aria-live="polite">
+                  <span className="couple-carousel-caption">{photo.caption}</span>
+                  <span className="couple-carousel-count">{activeIndex + 1} / {COUPLE_PHOTOS.length}</span>
+                </figcaption>
+              </motion.figure>
+            </AnimatePresence>
+            <button className="couple-carousel-arrow couple-carousel-arrow-right" type="button"
+              onClick={() => goToPhoto(activeIndex + 1)} aria-label="Next photo">
+              <ChevronRight size={24} aria-hidden="true" />
+            </button>
+          </div>
+          <div className="couple-carousel-dots" aria-label="Choose a photo">
+            {COUPLE_PHOTOS.map((item, index) => (
+              <button type="button" key={item.src}
+                className={`couple-carousel-dot ${index === activeIndex ? 'is-active' : ''}`}
+                aria-label={`Show photo ${index + 1} of ${COUPLE_PHOTOS.length}`}
+                aria-current={index === activeIndex ? 'true' : undefined}
+                onClick={() => goToPhoto(index)} />
+            ))}
+          </div>
+          <p className="couple-carousel-hint">Use the arrows or swipe to explore our memories</p>
         </div>
       </div>
     </section>
@@ -327,8 +365,8 @@ function GroomSideFunctions() {
   return (
     <section className="groom-section section-padding" id="groom-traditions">
       <div className="section-container">
-        <SectionHeading eyebrow="FROM THE GROOM'S FAMILY" title="Traditions close to our hearts"
-          subtitle="Honouring the beautiful rituals of our family before Simran and Krishna begin their new chapter together." />
+        <SectionHeading eyebrow="GROOM'S FAMILY · 04–06 DECEMBER 2026" title="Groom-side functions"
+          subtitle="Honouring Krishna's family's beautiful traditions before the wedding day." />
         <div className="groom-events-grid">
           {GROOM_SIDE_EVENTS.map((event, index) => (
             <motion.article className="groom-event-card" key={event.name}
@@ -355,9 +393,9 @@ function Ceremonies() {
       <FloralCorner />
       <div className="section-container">
         <SectionHeading eyebrow="A CELEBRATION OF LOVE & TRADITIONS" title="Our wedding festivities" subtitle="From cherished family traditions to joyful celebrations, leading to our forever." />
-        <div className="prewedding-header">
-          <p className="eyebrow">06 & 07 DECEMBER 2026</p>
-          <h3>Before the big day</h3>
+        <div className="prewedding-header" id="bride-traditions">
+          <p className="eyebrow">BRIDE'S FAMILY · 06 & 07 DECEMBER 2026</p>
+          <h3>Bride-side functions</h3>
         </div>
         <div className="prewedding-grid">
           {PRE_WEDDING_EVENTS.map((event, index) => (
@@ -503,7 +541,7 @@ function FooterInvitation() {
   const reset = () => window.setTimeout(() => setFeedback(''), 2800)
 
   const share = async () => {
-    const message = `Celebrate with Simran Jabbal & Krishna Kant! Jagoo: 6 Dec, 5 PM onwards. Mehndi: 7 Dec, 11 AM. Haldi: 7 Dec, 5 PM. Wedding: 9 Dec 2026 at Sohi Banquet · Palm Resorts. ${window.location.href}`
+    const message = `Celebrate with Simran Jabbal & Krishna Kant! Groom-side: Matkor (4 Dec), Haldi and Aama Mahua (5 Dec), Mehndi (6 Dec); times to be confirmed. Bride-side: Jagoo (6 Dec, 5 PM onwards), Mehndi (7 Dec, 11 AM), Haldi (7 Dec, 5 PM). Wedding: 9 Dec 2026, Sohi Banquet · Palm Resorts. ${window.location.href}`
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Simran & Krishna — Wedding Invitation', text: message, url: window.location.href })
@@ -576,8 +614,9 @@ function Header() {
   const links = [
     { href: '#invitation', label: 'Our invitation' },
     { href: '#our-moments', label: 'Our moments' },
-    { href: '#groom-traditions', label: 'Groom-side rituals' },
-    { href: '#celebrations', label: 'The celebrations' },
+    { href: '#groom-traditions', label: 'Groom-side functions' },
+    { href: '#bride-traditions', label: 'Bride-side functions' },
+    { href: '#celebrations', label: 'Wedding day' },
     { href: '#venue', label: 'The venue' },
     { href: '#wishes', label: 'Send blessings' },
   ]
