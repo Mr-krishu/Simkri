@@ -303,6 +303,20 @@ a { color: inherit; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+/* A guest may explicitly opt in to hero animation even when the device is set
+   to Reduce Motion. This does not override reduced motion elsewhere. */
+@media (prefers-reduced-motion: reduce) and (max-width:670px) {
+  .hero-motion-active .mobile-animated-scene,
+  .hero-motion-active .mobile-couple-entrance,
+  .hero-motion-active .mobile-scene-florals,
+  .hero-motion-active .mobile-scene-fire,
+  .hero-motion-active .mobile-fire-position,
+  .hero-motion-active .mobile-fire-glow,
+  .hero-motion-active .mobile-scene-floating-petals span {
+    animation-duration: revert !important;
+    animation-iteration-count: revert !important;
+  }
+}
 
 
 /* Pre-wedding festivities */
@@ -861,4 +875,74 @@ a { color: inherit; }
   .layered-mobile-ready .hero-copy {top: 58px;}
   .layered-mobile-ready .hero-invitation {margin-top: 7px;}
   .layered-mobile-ready .hero-tagline {margin-top: 5px;}
+}
+
+
+/* Phone-friendly visible motion and guest playback controls */
+@media(max-width:670px) {
+  .layered-mobile-ready .hero-motion-toggle {
+    display:inline-flex;
+    position:absolute;
+    z-index:14;
+    bottom:calc(49px + env(safe-area-inset-bottom, 0px));
+    right:15px;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    padding:8px 10px;
+    border:1px solid rgba(255,255,255,.65);
+    border-radius:999px;
+    background:rgba(64,40,41,.73);
+    color:#fffaf2;
+    font:600 10px/1.2 'DM Sans',sans-serif;
+    box-shadow:0 3px 10px rgba(45,28,23,.2);
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+    cursor:pointer;
+  }
+  .hero-motion-toggle:focus-visible {outline:3px solid #fff;outline-offset:3px;}
+  .hero-motion-paused .mobile-couple-entrance,
+  .hero-motion-paused .mobile-animated-scene,
+  .hero-motion-paused .mobile-scene-fire,
+  .hero-motion-paused .mobile-fire-position,
+  .hero-motion-paused .mobile-fire-glow,
+  .hero-motion-paused .mobile-scene-florals,
+  .hero-motion-paused .mobile-scene-floating-petals span {
+    animation:none !important;
+  }
+  .hero-motion-paused .mobile-scene-floating-petals span {display:none;}
+  .hero-motion-active .mobile-couple-entrance {
+    animation:mobile-couple-approach 2s ease-out both,mobile-couple-walk-visible 4.1s ease-in-out 2s infinite;
+  }
+  .hero-motion-active .mobile-scene-floating-petals span {
+    animation:mobile-petal-fall 8s linear infinite;
+  }
+  .hero-motion-active .mobile-scene-floating-petals span:nth-child(7) {left:22%;animation-delay:-1.5s;}
+  .hero-motion-active .mobile-scene-floating-petals span:nth-child(8) {left:63%;animation-delay:-5s;}
+  .hero-motion-active .mobile-scene-floating-petals span:nth-child(9) {left:79%;animation-delay:-3s;}
+  .hero-motion-active .mobile-scene-floating-petals span:nth-child(10) {left:41%;animation-delay:-7s;}
+  .hero-motion-active .mobile-scene-fire {animation:mobile-flame-flicker 1.2s ease-in-out infinite alternate;}
+  .hero-motion-active .mobile-fire-glow {animation:mobile-fire-glimmer 1.3s ease-in-out infinite alternate;}
+  .hero-motion-active .mobile-animated-scene {animation:mobile-scene-entrance 1.15s ease-out both;}
+}
+@keyframes mobile-couple-walk-visible {
+  0%,100% {transform:translate3d(0,var(--couple-drop),0) scale(var(--couple-size));}
+  25% {transform:translate3d(5px,calc(var(--couple-drop) - 5px),0) scale(var(--couple-size));}
+  50% {transform:translate3d(9px,calc(var(--couple-drop) + 1px),0) scale(var(--couple-size));}
+  75% {transform:translate3d(4px,calc(var(--couple-drop) - 4px),0) scale(var(--couple-size));}
+}
+@media (prefers-reduced-motion: reduce) and (max-width:670px) {
+  .hero-motion-active .mobile-couple-entrance {
+    animation:mobile-couple-walk-visible 4.1s ease-in-out infinite !important;
+  }
+  .hero-motion-active .mobile-scene-floating-petals span {
+    display:block;
+    animation:mobile-petal-fall 8s linear infinite !important;
+  }
+  .hero-motion-active .mobile-scene-fire {
+    animation:mobile-flame-flicker 1.2s ease-in-out infinite alternate !important;
+  }
+  .hero-motion-active .mobile-fire-glow {
+    animation:mobile-fire-glimmer 1.3s ease-in-out infinite alternate !important;
+  }
 }
