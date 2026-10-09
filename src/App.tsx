@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type TouchEvent } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Music2, Navigation, Pause, Play, Sparkles } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Navigation, Pause, Play, Sparkles } from 'lucide-react'
 
 // Wedding information lives here for easy customization.
 const WEDDING = {
@@ -978,6 +978,7 @@ function WeddingMusic() {
   const [available, setAvailable] = useState(false)
   const [playing, setPlaying] = useState(false)
   const [notice, setNotice] = useState('')
+  const [manuallyControlled, setManuallyControlled] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -996,9 +997,50 @@ function WeddingMusic() {
     return () => { mounted = false }
   }, [])
 
+  // Browsers often block autoplay with sound. Try once on load, and if blocked,
+  // retry on the guest's first gesture anywhere except the player itself.
+  // After someone uses Play/Pause manually, never restart music automatically.
+  useEffect(() => {
+    if (!available || manuallyControlled) return
+    const audio = audioRef.current
+    if (!audio) return
+    let disposed = false
+
+    const detach = () => {
+      document.removeEventListener('pointerdown', onFirstGesture)
+      document.removeEventListener('touchstart', onFirstGesture)
+      document.removeEventListener('keydown', onFirstGesture)
+    }
+    const tryStart = () => {
+      if (disposed || !audio.paused) return
+      audio.volume = 0.4
+      audio.play().then(() => {
+        if (!disposed) detach()
+      }).catch(() => {
+        // Autoplay may be disallowed; keep gesture listeners for a later try.
+      })
+    }
+    const onFirstGesture = (event: Event) => {
+      const target = event.target
+      if (target instanceof Element && target.closest('.wedding-music-button')) return
+      tryStart()
+    }
+
+    document.addEventListener('pointerdown', onFirstGesture, { passive: true })
+    document.addEventListener('touchstart', onFirstGesture, { passive: true })
+    document.addEventListener('keydown', onFirstGesture)
+    tryStart()
+
+    return () => {
+      disposed = true
+      detach()
+    }
+  }, [available, manuallyControlled])
+
   const toggleMusic = async () => {
     const audio = audioRef.current
     if (!audio) return
+    setManuallyControlled(true)
     setNotice('')
     if (!audio.paused) {
       audio.pause()
@@ -1021,7 +1063,7 @@ function WeddingMusic() {
         ref={audioRef}
         src={WEDDING_MUSIC_URL}
         loop
-        preload="none"
+        preload="metadata"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onError={() => { setAvailable(false); setPlaying(false) }}
@@ -1031,18 +1073,13 @@ function WeddingMusic() {
         type="button"
         className={`wedding-music-button ${playing ? 'is-playing' : ''}`}
         onClick={toggleMusic}
-        aria-label={playing ? 'Pause Kudmayi music' : 'Play Kudmayi music'}
+        aria-label={playing ? 'Pause wedding music' : 'Play wedding music'}
         aria-pressed={playing}
-        title={playing ? 'Pause Kudmayi' : 'Play Kudmayi'}
+        title={playing ? 'Pause music' : 'Play music'}
       >
         <span className="wedding-music-icon" aria-hidden="true">
-          {playing ? <Pause size={17} /> : <Play size={17} />}
+          {playing ? <Pause size={20} /> : <Play size={20} />}
         </span>
-        <span className="wedding-music-label">
-          <strong>Kudmayi</strong>
-          <small>{playing ? 'Now playing' : 'Tap to play'}</small>
-        </span>
-        <Music2 className="wedding-music-note" size={16} aria-hidden="true" />
       </button>
       {notice && <span className="wedding-music-error" role="status">{notice}</span>}
     </div>
