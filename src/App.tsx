@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type TouchEvent } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Navigation, Sparkles } from 'lucide-react'
 
@@ -511,18 +511,111 @@ function WeddingFestivitiesIntro() {
   )
 }
 
+// Only one ceremony card is shown at a time on small screens.
+// Autoplay runs while the carousel is visible, pausing for details, interaction
+// or reduced-motion preferences. Desktop retains the full card grid.
+function useMobileEventCarousel(total: number, paused = false) {
+  const [active, setActive] = useState(0)
+  const [mobile, setMobile] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const startX = useRef<number | null>(null)
+  const lastInteraction = useRef(0)
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 670px)')
+    const sync = () => setMobile(media.matches)
+    sync()
+    media.addEventListener('change', sync)
+    return () => media.removeEventListener('change', sync)
+  }, [])
+
+  useEffect(() => {
+    if (!mobile || !ref.current) return
+    if (typeof IntersectionObserver === 'undefined') {
+      setVisible(true)
+      return
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting)
+    }, { threshold: .2 })
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [mobile])
+
+  useEffect(() => {
+    if (!mobile || !visible || paused || total < 2) return
+    const timer = window.setInterval(() => {
+      if (document.hidden ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        Date.now() - lastInteraction.current < 8500 ||
+        (ref.current?.contains(document.activeElement) ?? false)) return
+      setActive(current => (current + 1) % total)
+    }, 5200)
+    return () => window.clearInterval(timer)
+  }, [mobile, visible, paused, total])
+
+  const select = (next: number) => {
+    lastInteraction.current = Date.now()
+    setActive(((next % total) + total) % total)
+  }
+  const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    startX.current = event.touches[0]?.clientX ?? null
+  }
+  const onTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    if (!mobile || startX.current === null) return
+    const difference = event.changedTouches[0]?.clientX - startX.current
+    startX.current = null
+    if (difference === undefined || Math.abs(difference) < 50) return
+    select(active + (difference < 0 ? 1 : -1))
+  }
+
+  return { active, mobile, ref, select, onTouchStart, onTouchEnd }
+}
+
+function EventCarouselControls({
+  label, count, active, select
+}: {
+  label: string
+  count: number
+  active: number
+  select: (index: number) => void
+}) {
+  return (
+    <div className="event-carousel-controls" role="group" aria-label={`${label} navigation`}>
+      <button type="button" className="event-carousel-arrow" onClick={() => select(active - 1)}
+        aria-label={`Previous ${label} event`}><ChevronLeft size={20} /></button>
+      <div className="event-carousel-dots" role="group" aria-label={`Choose ${label} event`}>
+        {Array.from({ length: count }, (_, index) => (
+          <button type="button" key={index}
+            className={`event-carousel-dot ${index === active ? 'is-current' : ''}`}
+            aria-label={`Show ${label} event ${index + 1} of ${count}`}
+            aria-current={index === active ? 'true' : undefined}
+            onClick={() => select(index)} />
+        ))}
+      </div>
+      <button type="button" className="event-carousel-arrow" onClick={() => select(active + 1)}
+        aria-label={`Next ${label} event`}><ChevronRight size={20} /></button>
+    </div>
+  )
+}
+
 function GroomSideFunctions() {
   const [openEvent, setOpenEvent] = useState<string | null>(null)
+  const carousel = useMobileEventCarousel(GROOM_SIDE_EVENTS.length, openEvent !== null)
+  const selectEvent = (index: number) => { setOpenEvent(null); carousel.select(index) }
   return (
     <section className="groom-section section-padding" id="groom-traditions">
       <div className="section-container">
         <SectionHeading eyebrow="GROOM'S FAMILY · 04–06 DECEMBER 2026" title="Groom-side functions"
           subtitle="Honouring Krishna's family's beautiful traditions before the wedding day." />
-        <div className="groom-events-grid">
-          {GROOM_SIDE_EVENTS.map((event, index) => (
-            <motion.article className={`groom-event-card ${openEvent === event.name ? 'event-expanded' : ''}`} key={event.name}
-              initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: .2 }} transition={{ duration: .55, delay: index * .07 }}>
+        <div className="event-carousel-shell" ref={carousel.ref}
+          onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
+          <div className="groom-events-grid" aria-label="Groom-side wedding events">
+            {GROOM_SIDE_EVENTS.map((event, index) => (
+              <motion.article className={`groom-event-card ${openEvent === event.name ? 'event-expanded' : ''} ${carousel.active === index ? 'is-current' : ''}`} key={event.name}
+                initial={false} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: .2 }} transition={{ duration: .4 }}>
               <span className="groom-event-icon" aria-hidden="true">{event.icon}</span>
               <p className="groom-event-date">{event.date}</p>
               <h3>{event.name}</h3>
@@ -536,7 +629,10 @@ function GroomSideFunctions() {
                 {openEvent === event.name ? 'Less' : 'Details'} <ChevronRight size={15} aria-hidden="true" />
               </button>
             </motion.article>
-          ))}
+            ))}
+          </div>
+          <EventCarouselControls label="groom-side" count={GROOM_SIDE_EVENTS.length}
+            active={carousel.active} select={selectEvent} />
         </div>
         <p className="groom-event-note">Times and locations for the groom-side functions will be shared once confirmed.</p>
       </div>
@@ -546,6 +642,9 @@ function GroomSideFunctions() {
 
 function Ceremonies() {
   const [openEvent, setOpenEvent] = useState<string | null>(null)
+  const brideCarousel = useMobileEventCarousel(PRE_WEDDING_EVENTS.length, openEvent !== null)
+  const weddingCarousel = useMobileEventCarousel(2)
+  const selectBride = (index: number) => { setOpenEvent(null); brideCarousel.select(index) }
   return (
     <section id="bride-traditions" className="ceremonies-section section-padding">
       <FloralCorner />
@@ -554,16 +653,18 @@ function Ceremonies() {
           <p className="eyebrow">BRIDE'S FAMILY · 06 & 07 DECEMBER 2026</p>
           <h3>Bride-side functions</h3>
         </div>
-        <div className="prewedding-grid">
-          {PRE_WEDDING_EVENTS.map((event, index) => (
-            <motion.article
-              className={`prewedding-card ${openEvent === event.name ? 'event-expanded' : ''}`}
-              key={event.name}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: .2 }}
-              transition={{ duration: .55, delay: index * .1 }}
-            >
+        <div className="event-carousel-shell" ref={brideCarousel.ref}
+          onTouchStart={brideCarousel.onTouchStart} onTouchEnd={brideCarousel.onTouchEnd}>
+          <div className="prewedding-grid" aria-label="Bride-side wedding events">
+            {PRE_WEDDING_EVENTS.map((event, index) => (
+              <motion.article
+                className={`prewedding-card ${openEvent === event.name ? 'event-expanded' : ''} ${brideCarousel.active === index ? 'is-current' : ''}`}
+                key={event.name}
+                initial={false}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: .2 }}
+                transition={{ duration: .4 }}
+              >
               <span className="prewedding-icon" aria-hidden="true">{event.icon}</span>
               <p className="prewedding-date">{event.date}</p>
               <h4>{event.name}</h4>
@@ -577,15 +678,21 @@ function Ceremonies() {
                 {openEvent === event.name ? 'Less' : 'Details'} <ChevronRight size={15} aria-hidden="true" />
               </button>
             </motion.article>
-          ))}
+            ))}
+          </div>
+          <EventCarouselControls label="bride-side" count={PRE_WEDDING_EVENTS.length}
+            active={brideCarousel.active} select={selectBride} />
         </div>
         <div className="wedding-day-heading">
           <p className="eyebrow">THE WEDDING DAY</p>
           <h3>Two traditions, one forever</h3>
         </div>
         <div className="ceremony-intro-date"><span className="line" /> WEDNESDAY, 09 DECEMBER 2026 <span className="line" /></div>
-        <div className="ceremony-grid">
-          <motion.article className="ceremony-card sikh-card" initial={{opacity: 0, y: 30}} whileInView={{opacity: 1, y: 0}} viewport={{once: true, amount: .2}} transition={{duration: .6}}>
+        <div className="event-carousel-shell" ref={weddingCarousel.ref}
+          onTouchStart={weddingCarousel.onTouchStart} onTouchEnd={weddingCarousel.onTouchEnd}>
+          <div className="ceremony-grid" aria-label="Wedding day ceremonies">
+            <motion.article className={`ceremony-card sikh-card ${weddingCarousel.active === 0 ? 'is-current' : ''}`}
+              initial={false} whileInView={{opacity: 1, y: 0}} viewport={{once: true, amount: .2}} transition={{duration: .4}}>
             <div className="card-decoration" aria-hidden="true"><span>ੴ</span></div>
             <div className="ceremony-card-content">
               <p className="ceremony-number">CEREMONY ONE <span>✦</span> MORNING</p>
@@ -597,7 +704,8 @@ function Ceremonies() {
               <div className="ceremony-bottom"><span>09 DECEMBER 2026</span><span>ੴ</span></div>
             </div>
           </motion.article>
-          <motion.article className="ceremony-card hindu-card" initial={{opacity: 0, y: 30}} whileInView={{opacity: 1, y: 0}} viewport={{once: true, amount: .2}} transition={{duration: .6, delay: .13}}>
+          <motion.article className={`ceremony-card hindu-card ${weddingCarousel.active === 1 ? 'is-current' : ''}`}
+              initial={false} whileInView={{opacity: 1, y: 0}} viewport={{once: true, amount: .2}} transition={{duration: .4}}>
             <div className="card-decoration" aria-hidden="true"><span>ॐ</span></div>
             <div className="ceremony-card-content">
               <p className="ceremony-number">CEREMONY TWO <span>✦</span> EVENING</p>
@@ -609,6 +717,9 @@ function Ceremonies() {
               <div className="ceremony-bottom"><span>09 DECEMBER 2026</span><span>ॐ</span></div>
             </div>
           </motion.article>
+          </div>
+          <EventCarouselControls label="wedding-day" count={2}
+            active={weddingCarousel.active} select={weddingCarousel.select} />
         </div>
         <p className="ceremony-footnote">We would be honoured to have you join us for both ceremonies and share in our joy.</p>
       </div>
