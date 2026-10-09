@@ -1,0 +1,305 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --wine: #641f35;
+  --wine-dark: #421825;
+  --ink: #4f3439;
+  --gold: #b78954;
+  --gold-soft: #d6b17c;
+  --ivory: #fbf6ec;
+  --paper: #fffaf2;
+  --muted: #907c78;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; background: var(--ivory); color: var(--ink); }
+body, button, a { -webkit-tap-highlight-color: transparent; }
+button, a { touch-action: manipulation; }
+button { cursor: pointer; }
+a { color: inherit; }
+::selection { background: #e8cfb0; color: var(--wine); }
+:focus-visible { outline: 3px solid #bb905b; outline-offset: 5px; }
+.site-shell { width: 100%; overflow: clip; }
+.section-container { max-width: 1190px; margin: 0 auto; padding-inline: 28px; position: relative; z-index: 1; }
+.section-padding { padding-block: clamp(85px, 10vw, 145px); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; border: 0; clip: rect(0, 0, 0, 0); overflow: hidden; white-space: nowrap; }
+
+/* Polished, floating navigation */
+.site-header { position: fixed; top: 0; z-index: 100; width: 100%; height: 77px; display: flex; align-items: center; justify-content: space-between; padding: 0 max(36px, calc((100vw - 1320px) / 2)); color: var(--wine-dark); background: linear-gradient(180deg,rgba(255,249,237,.84),rgba(255,249,237,.51)); border-bottom: 1px solid rgba(141, 94, 66, .12); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.header-mark { text-decoration: none; font: 600 26px/1 'Cormorant Garamond',serif; letter-spacing: .025em; white-space: nowrap; }
+.header-mark span { font: 400 15px/1 Georgia,serif; color: #ac7852; margin: 0 5px; }
+.header-nav { display: flex; align-items: center; gap: clamp(19px, 2.5vw, 36px); }
+.header-nav a { text-decoration: none; font: 600 10px/1.4 'DM Sans',sans-serif; letter-spacing: .11em; color: #67414a; transition: color .2s; }
+.header-nav a:hover { color: #b38055; }
+.header-nav .header-rsvp { border: 1px solid rgba(105,43,61,.36); color: var(--wine); padding: 12px 14px; display: inline-flex; gap: 10px; align-items: center; }
+.mobile-menu-toggle { display: none; border: 0; background: none; color: var(--wine); padding: 8px; }
+
+/* Scroll-driven gateway opening */
+.hero-scroll { height: 191svh; min-height: 1040px; position: relative; }
+.hero-sticky { position: sticky; top: 0; height: 100svh; min-height: 610px; background: #9cc5ce; overflow: hidden; isolation: isolate; }
+.sky-layer { position: absolute; inset: 0; background: linear-gradient(180deg,#8ebfcb 0%,#a6cfD6 52%,#d8e4dc 90%); z-index: -3; }
+.sky-sun { position: absolute; height: min(35vw,360px); width: min(35vw,360px); top: 12%; left: 53%; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle,#fff6d5 0%,rgba(250,241,203,.55) 29%,transparent 71%); opacity: .6; }
+.cloud { position: absolute; width: 350px; height: 93px; border-radius: 50%; background: rgba(255,255,255,.76); filter: blur(11px); box-shadow: 70px -17px 35px rgba(255,255,255,.65),-45px 15px 22px rgba(255,255,255,.62),155px 15px 25px rgba(255,255,255,.48); animation: cloud-drift 26s ease-in-out infinite alternate; }
+.cloud-one { top: 19%; left: -130px; transform: scale(.82); }
+.cloud-two { top: 27%; right: -175px; transform: scale(1.15); animation-delay: -8s; }
+.cloud-three { top: 57%; left: 20%; width: 210px; opacity: .46; transform: scale(.7); animation-delay: -16s; }
+@keyframes cloud-drift { to { translate: 65px 6px; } }
+.sky-bird { position: absolute; font: 400 85px/1 Georgia,serif; color: #466974; opacity: .25; transform: rotate(8deg); }
+.bird-one { left: 11%; top: 35%; }.bird-two { right: 12%; top: 39%; transform: scale(.6) rotate(8deg); }
+.hero-copy { position: absolute; z-index: 8; top: clamp(105px,17%,175px); left: 0; right: 0; display: flex; flex-direction: column; align-items: center; text-align: center; padding-inline: 20px; color: #fffbef; text-shadow: 0 1px 24px rgba(61,92,108,.18); }
+.hero-top-rule { display: flex; gap: 17px; align-items: center; letter-spacing: .32em; font-size: 10px; font-weight: 700; }
+.hero-top-rule span { width: 29px; height: 1px; background: rgba(255,255,255,.9); }
+.hero-invitation { margin: 22px 0 0; font: italic 22px/1.3 'Cormorant Garamond',serif; }
+.hero-copy h1 { margin: -7px 0 -3px; display: flex; gap: clamp(9px, 2vw, 27px); justify-content: center; align-items: center; color: white; font: 500 clamp(70px, 10vw, 153px)/1.05 'Great Vibes',cursive; white-space: nowrap; font-weight: 400; }
+.hero-copy h1 i { font: italic 400 clamp(35px, 5vw, 60px)/1 'Cormorant Garamond',serif; transform: translateY(10px); }
+.hero-date { font: 700 12px/1.6 'DM Sans',sans-serif; letter-spacing: .24em; margin: 0; }
+.hero-date b { margin: 0 8px; }
+.hero-tagline { margin: 12px 0 0; font: italic 23px/1.2 'Cormorant Garamond',serif; }
+.gateway-wrap { z-index: 4; position: absolute; inset: 0; pointer-events: none; }
+.gateway { position: absolute; width: min(960px, 99vw); height: auto; left: 50%; bottom: -24px; transform-origin: 50% 87%; object-fit: contain; max-width: none; filter: drop-shadow(0 4px 8px rgba(88,65,48,.12)); }
+.gateway-left { clip-path: inset(0 50% 0 0); translate: -50% 0; }
+.gateway-right { clip-path: inset(0 0 0 50%); translate: -50% 0; }
+.hero-reveal { position: absolute; z-index: 1; inset: 0; background: radial-gradient(circle at 50% 56%,#fffaf0 0%,#efe2c5 69%,#dcc39c 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--wine); text-align: center; }
+.reveal-ring { height: 94px; width: 94px; border: 1px solid #b79364; border-radius: 50%; display: grid; place-items: center; margin-bottom: 23px; color: #b58451; }
+.reveal-eyebrow { letter-spacing: .26em; font-size: 10px; font-weight: 700; margin: 0; }
+.reveal-title { font: italic clamp(43px, 6vw, 78px)/1.1 'Cormorant Garamond',serif; margin: 10px 0 0; }
+.scroll-cue { position: absolute; bottom: 23px; left: 50%; z-index: 9; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; color: var(--wine); font-size: 9px; letter-spacing: .19em; font-weight: 700; text-decoration: none; padding: 10px; border-radius: 10px; text-shadow: 0 1px 2px rgba(255,255,255,.45); }
+.scroll-cue svg { animation: bounce 2s ease-in-out infinite; }
+@keyframes bounce { 50% { transform: translateY(5px); } }
+.hero-grain { position: absolute; inset: 0; pointer-events: none; z-index: 12; opacity: .15; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.23'/%3E%3C/svg%3E"); }
+
+/* Section titles and ornamental details */
+.eyebrow { margin: 0; color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: .24em; line-height: 1.7; }
+.section-heading { max-width: 760px; margin: 0 auto; text-align: center; }
+.section-heading h2 { font: 500 clamp(45px, 5.1vw, 70px)/1.06 'Cormorant Garamond',serif; letter-spacing: -.022em; color: var(--wine); margin: 16px 0 16px; }
+.section-subtitle { font: 400 clamp(18px, 2vw, 22px)/1.5 'Cormorant Garamond',serif; color: #786265; max-width: 580px; margin: 14px auto 0; }
+.flower-divider { display: flex; gap: 13px; align-items: center; justify-content: center; color: #b88d5e; }
+.flower-divider span { height: 1px; width: 55px; background: currentColor; opacity: .54; }
+.flower-divider-light { color: #e7bc7b; }
+.section-heading-light h2 { color: #fff1db; }.section-heading-light .section-subtitle { color: #e7d7d4; }.section-heading-light .eyebrow { color: #e4bc86; }
+.floral-corner { position: absolute; width: clamp(190px, 22vw, 300px); color: #a5795b; opacity: .3; left: -40px; top: 9%; pointer-events: none; }
+.floral-corner-flip { right: -40px; left: auto; top: auto; bottom: 0; transform: rotate(180deg); }
+
+/* The formal invitation */
+.invitation-section { position: relative; background: radial-gradient(ellipse at 50% 25%,#fffdf6 0%,#fcf7ec 58%,#f5eadb 100%); overflow: hidden; }
+.invitation-content { text-align: center; }
+.invitation-backdrop { position: absolute; inset: 0; opacity: .23; pointer-events: none; }
+.thin-arch { width: 90%; height: 106%; max-width: 1120px; border: 1px solid #c9a575; border-radius: 47% 47% 0 0 / 22% 22% 0 0; position: absolute; top: 4%; left: 50%; transform: translateX(-50%); }
+.thin-arch-two { width: 86%; top: 6.5%; }
+.invite-crest { margin: 0 auto 29px; width: 116px; height: 116px; border: 1px solid #bf9869; border-radius: 50%; display: flex; justify-content: center; align-items: center; gap: 5px; color: var(--wine); outline: 1px solid rgba(194,148,91,.45); outline-offset: 8px; font: 500 46px/.8 'Cormorant Garamond',serif; background: #fff9ef70; }
+.invite-crest b { font: italic 29px/1 'Cormorant Garamond',serif; color: var(--gold); transform: translateY(5px); }
+.invitation-section .section-heading h2 { font-size: clamp(48px, 5vw, 68px); }
+.couple-names { display: flex; flex-direction: column; align-items: center; margin: 20px auto 20px; color: var(--wine); font: 500 clamp(55px, 7vw, 93px)/.99 'Great Vibes',cursive; }
+.couple-names i { display: block; color: #ba8c54; font: italic 41px/1.1 'Cormorant Garamond',serif; margin: -9px 0 3px; }
+.invite-date-label { font-size: 10px; letter-spacing: .19em; font-weight: 700; color: #987451; margin: 35px 0 55px; }
+.family-panel { padding: 38px 35px; border-top: 1px solid #d8bea1; border-bottom: 1px solid #d8bea1; max-width: 970px; margin: 0 auto; display: grid; grid-template-columns: 1fr 90px 1fr; gap: 28px; align-items: center; }
+.family-side { min-width: 0; }
+.family-side .eyebrow { font-size: 9px; letter-spacing: .17em; margin-bottom: 19px; }
+.family-names { font: 500 clamp(22px, 2.7vw, 31px)/1.21 'Cormorant Garamond',serif; color: var(--wine); margin: 0; }
+.family-amp { font: italic 23px/.9 'Cormorant Garamond',serif; margin: 6px 0; color: var(--gold); }
+.family-lotus { width: 71px; display: block; margin: auto; }
+.countdown-wrapper { margin: 65px 0 4px; }
+.countdown { display: grid; grid-template-columns: repeat(4,minmax(0,120px)); justify-content: center; gap: 16px; margin-top: 20px; }
+.countdown-item { padding: 14px 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; border-right: 1px solid #dac8b0; }
+.countdown-item:last-child { border-right: none; }
+.countdown-number { color: var(--wine); font: 500 clamp(40px, 5vw, 65px)/1 'Cormorant Garamond',serif; font-variant-numeric: tabular-nums; }
+.countdown-label { color: #90765a; font: 700 10px/1.5 'DM Sans',sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+
+/* Two ceremonies */
+.ceremonies-section { background-color: #f7efe5; background-image: radial-gradient(#d0b18a30 1px,transparent 1px); background-size: 23px 23px; position: relative; overflow: hidden; }
+.ceremony-intro-date { display: flex; align-items: center; justify-content: center; gap: 18px; color: #a67d52; letter-spacing: .20em; font-size: 10px; font-weight: 700; margin: 33px 0 40px; text-align: center; }
+.ceremony-intro-date .line { width: 35px; height: 1px; background: #bc9b76; }
+.ceremony-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; }
+.ceremony-card { min-height: 552px; border: 1px solid #cead82; padding: 13px; box-shadow: 0 15px 30px rgba(92,46,30,.055); position: relative; overflow: hidden; background: #fffaf0; }
+.ceremony-card::before, .ceremony-card::after { content: ''; position: absolute; width: 140px; height: 140px; border: 1px solid currentColor; border-radius: 50%; opacity: .11; transform: scaleX(1.5); }
+.ceremony-card::before { left: -48px; top: -62px; }.ceremony-card::after { right: -48px; bottom: -62px; }
+.sikh-card { color: var(--wine); }.hindu-card { color: #734631; background: #fff7eb; }
+.ceremony-card-content { border: 1px solid rgba(176,130,77,.48); height: 100%; min-height: 524px; position: relative; display: flex; align-items: center; flex-direction: column; text-align: center; padding: 32px 29px 60px; }
+.card-decoration { font: 47px/1.2 Georgia,serif; width: 84px; height: 84px; display: grid; place-items: center; border: 1px solid #d4b384; border-radius: 50%; margin: 0 auto 13px; }
+.hindu-card .card-decoration { font-size: 52px; }
+.ceremony-number { font-size: 9px; letter-spacing: .23em; font-weight: 700; color: #ad885d; margin: 0; }
+.ceremony-number span { margin: 0 6px; }
+.ceremony-card h3 { font: 500 clamp(41px, 4.4vw, 59px)/1.03 'Cormorant Garamond',serif; margin: 19px 0 0; }
+.ceremony-subtitle { margin: 3px 0 0; font: italic 22px/1.4 'Cormorant Garamond',serif; color: #9a7c70; }
+.ceremony-divider { display: block; height: 1px; width: 80px; background: #caa777; margin: 25px 0 23px; }
+.ceremony-clock { font: 500 clamp(43px, 4.7vw, 65px)/1 'Cormorant Garamond',serif; margin: 0; white-space: nowrap; }
+.ceremony-clock span { color: #bc925e; }.ceremony-clock small { font: 400 17px/1.2 'Cormorant Garamond',serif; }
+.ceremony-description { font: 400 19px/1.3 'Cormorant Garamond',serif; max-width: 320px; margin: 20px 0 0; color: #826f69; }
+.ceremony-bottom { position: absolute; bottom: 18px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center; font-size: 9px; color: #ac815b; letter-spacing: .15em; font-weight: 700; }
+.ceremony-bottom span:last-child { font-size: 18px; font-weight: 400; }
+.ceremony-footnote { text-align: center; font: italic 23px/1.5 'Cormorant Garamond',serif; color: #8c7070; margin: 39px auto 0; }
+
+/* Transition banner */
+.interlude-section { height: 610px; background: linear-gradient(115deg,#6a2438,#782b3d 47%,#401927); position: relative; color: #f7dfb2; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.interlude-overlay { position: absolute; inset: 0; opacity: .17; background: repeating-radial-gradient(circle at 15% 95%,transparent 0 58px,#e0bb7d 59px 61px,transparent 62px 95px); }
+.interlude-illustration { position: absolute; right: max(0px,calc((100vw - 1350px) / 2)); bottom: -43px; width: 400px; height: 580px; opacity: .52; }
+.interlude-arch { position: absolute; width: 345px; height: 525px; bottom: 0; right: 30px; border: 3px solid #ddb57f; border-radius: 50% 50% 0 0 / 34% 34% 0 0; box-shadow: inset 0 0 0 14px #782a3e,inset 0 0 0 17px #dfb67d,inset 0 0 0 30px #782a3e,inset 0 0 0 31px #ce9c69; }
+.interlude-arch::before { content: ''; position: absolute; inset: 55px 55px 0; border: 2px solid #d4a676; border-radius: 50% 50% 0 0 / 36% 36% 0 0; }
+.interlude-arch::after { content: ''; position: absolute; width: 130px; height: 130px; border: 1px solid #d9a675; border-radius: 50%; left: 108px; top: 105px; }
+.mini-arch-interior { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 175px; height: 175px; display: grid; place-items: center; }
+.mini-lotus { width: 147px; opacity: .6; }
+.interlude-copy { position: relative; z-index: 2; width: min(100%,1130px); padding: 20px 28px; }
+.interlude-copy p { font-size: 11px; letter-spacing: .22em; font-weight: 700; }
+.interlude-copy h2 { font: 400 clamp(48px, 6.4vw, 87px)/1.03 'Cormorant Garamond',serif; color: #fff5df; margin: 25px 0; }
+.interlude-copy h2 em { color: #ebbd80; font-weight: 400; }
+.interlude-copy .flower-divider { justify-content: flex-start; }
+
+/* Interactive wish lanterns */
+.wishes-section { min-height: 655px; background: radial-gradient(ellipse at 50% 105%,#813d4f,#4d2438 49%,#22192b 100%); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.wishes-stars { position: absolute; inset: 0; opacity: .58; background-image: radial-gradient(1px 1px at 25px 46px,#f5e6bd 99%,transparent 100%), radial-gradient(1.5px 1.5px at 85px 129px,#fff1d4 99%,transparent 100%),radial-gradient(1px 1px at 140px 22px,#e8bb82 99%,transparent 100%),radial-gradient(1px 1px at 199px 170px,#fff5de 99%,transparent 100%); background-size: 247px 221px; }
+.wish-content { text-align: center; padding-block: 90px 120px; pointer-events: none; }
+.wish-content .button { pointer-events: auto; }
+.wish-symbol { font: 65px/1 Georgia,serif; color: #e3af75; margin: 0 auto 17px; }
+.wish-content .section-heading { max-width: 670px; }
+.wish-content .section-heading h2 { font-size: clamp(46px, 6vw, 76px); }
+.wish-content .section-subtitle { font-size: 22px; }
+.wish-helper { font: italic 21px/1.4 'Cormorant Garamond',serif; color: #e0c1c0; margin: 22px 0 0; min-height: 31px; }
+.wishes-horizon { position: absolute; bottom: 0; height: 100px; left: 0; right: 0; background: linear-gradient(180deg,transparent,rgba(217,114,91,.12)); pointer-events: none; }
+.wish-lantern-zone { position: absolute; inset: 0; z-index: 3; overflow: hidden; pointer-events: none; }
+.floating-lantern { position: absolute; top: 0; width: 44px; height: 75px; transform-origin: bottom center; filter: drop-shadow(0 0 20px rgba(249,162,80,.7)); }
+.lantern-body { position: relative; top: 10px; left: 2px; width: 40px; height: 51px; border-radius: 50% 50% 30% 30% / 22% 22% 50% 50%; background: radial-gradient(ellipse at center bottom,#fff2b0,#fcb65d 60%,#d7764c 90%); border: 1px solid #e8a466; box-shadow: inset 0 5px 8px #fae3ae85, 0 0 25px #ffce8499; }
+.lantern-body::before { content: ''; position: absolute; left: 18px; top: 3px; bottom: 3px; border-left: 1px solid rgba(166,73,40,.22); }
+.lantern-top { position: absolute; width: 18px; height: 5px; border-radius: 50%; border: 1px solid #e8aa62; top: 7px; left: 13px; }
+.lantern-bottom { position: absolute; width: 30px; height: 6px; border: 1px solid #b96b42; background: #d29a58; border-radius: 50%; bottom: 7px; left: 7px; }
+.lantern-fire { width: 7px; height: 12px; border-radius: 50% 50% 40% 40%; background: #fffce8; box-shadow: 0 0 15px #fffbd1; position: absolute; bottom: -4px; left: 16px; }
+
+/* Illustrated venue card */
+.venue-section { background: #fcf8ef; }
+.venue-card { max-width: 1090px; margin: 55px auto 0; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #e4c9a4; background: #fffaf3; box-shadow: 0 24px 72px #6633330e; }
+.venue-illustration { min-height: 500px; background: linear-gradient(#dfddd0,#f5e6c8 66%,#d5b38b); position: relative; overflow: hidden; }
+.venue-illustration::before { content:''; position:absolute; width:115%; left:-5%; bottom:67px; height:110px; background:#bfbb9e; border-radius:50% 50% 0 0; opacity:.6; }
+.venue-illustration::after { content:''; position:absolute; left:0; right:0; bottom:0; height:78px; background:#b5a581; }
+.venue-sun { position: absolute; top: 90px; left: 52%; border-radius: 50%; width: 150px; height: 150px; transform: translateX(-50%); background: #f7e6be; box-shadow: 0 0 80px #fff3db; }
+.venue-wind-line { position:absolute; width:100px; height:2px; border-radius:3px; background:#c6a88a; opacity:.5; }
+.venue-wind-line.line-one { top: 117px; left: 12%; }.venue-wind-line.line-two { top: 184px; right: 13%; width: 70px; }
+.venue-building { position: absolute; width: 66%; max-width: 350px; height: 300px; bottom: 85px; left: 50%; transform: translateX(-50%); z-index: 2; filter: drop-shadow(0 12px 2px rgba(84,66,50,.16)); }
+.venue-building-dome { position: absolute; left: 29%; width: 42%; height: 120px; top: -9px; border-radius: 50% 50% 0 0 / 87% 87% 0 0; background: #b78058; border: 5px solid #8c6550; box-shadow: inset 0 0 0 11px #ddb78e; }
+.venue-building-dome::after { content:''; position:absolute; width:4px; height:28px; top:-26px; left:50%; background:#8f684d; }
+.venue-building-roof { position: absolute; top: 97px; width: 104%; left: -2%; height: 24px; background: #9f7259; border: 4px solid #f1d5af; border-radius: 7px; }
+.venue-building-walls { position: absolute; bottom: 0; width: 100%; height: 183px; background: repeating-linear-gradient(90deg,#ba8f70 0 3px, #e6ca9f 3px 50px); border: 8px solid #ae8064; border-bottom: none; display: flex; align-items: end; justify-content: space-evenly; padding-bottom: 0; }
+.venue-building-walls span { width: 18%; height: 108px; background: #61464a; border-radius: 45% 45% 0 0; border: 6px solid #a07761; border-bottom: none; box-shadow: inset 0 5px 20px #251c28; }
+.venue-building-walls span:nth-child(2) { height: 142px; width: 26%; }
+.venue-building-steps { position: absolute; height: 19px; bottom: -13px; left: -8%; width: 116%; background: #b48f75; border-top: 6px solid #f3d3a8; }
+.venue-plant { position: absolute; z-index: 4; bottom: 74px; width: 80px; height: 145px; }
+.plant-left { left: 23px; }.plant-right { right: 23px; transform: scaleX(-1); }
+.venue-plant::before { content:''; position:absolute; bottom: 0; left: 50%; width: 6px; height: 135px; background: #687762; transform: rotate(10deg); }
+.venue-plant span { position:absolute; left: 46%; width: 52px; height: 22px; border-radius: 100% 0 100% 0; background:#7f9070; transform-origin:0 100%; }
+.venue-plant span:nth-child(1){ bottom: 40px; transform:rotate(25deg); }.venue-plant span:nth-child(2){ bottom: 75px; transform:rotate(-155deg); }.venue-plant span:nth-child(3){ bottom: 108px; transform:rotate(30deg); }
+.venue-illustration > p { position: absolute; left: 0; right: 0; bottom: 24px; z-index: 5; text-align: center; color: #fff2dd; letter-spacing: .18em; font-size: 9px; font-weight: 700; margin: 0; }
+.venue-details { min-height: 500px; text-align: center; display: flex; align-items: center; flex-direction: column; justify-content: center; padding: 60px 27px; }
+.venue-icon { width: 52px; height: 52px; border: 1px solid #c7a073; border-radius: 50%; display: grid; place-items: center; color: var(--gold); margin-bottom: 26px; }
+.venue-details h3 { color: var(--wine); font: 500 clamp(38px, 4.4vw, 58px)/.99 'Cormorant Garamond',serif; margin: 12px 0 10px; }
+.venue-details h3 em { font-weight: 400; }.venue-city { color: #857168; font-size: 13px; letter-spacing: .045em; margin: 8px 0 0; }
+.venue-hairline { height: 1px; width: 85px; background: #caa679; margin: 26px auto 22px; }
+.venue-time { font: 500 23px/1.2 'Cormorant Garamond',serif; color: var(--wine); margin: 0 0 6px; }
+.venue-times-small { font: 16px/1.6 'Cormorant Garamond',serif; color: #9e8580; margin: 0 0 29px; }
+.venue-map-note { font-size: 10px; color: #a18a7f; margin: 14px 0 0; }
+
+/* Buttons / footer */
+.button { border: 1px solid transparent; min-height: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 13px; padding: 15px 22px; font-size: 11px; line-height: 1; letter-spacing: .065em; font-weight: 700; text-decoration: none; transition: transform .2s, background .2s, color .2s, box-shadow .2s; }
+.button:hover { transform: translateY(-3px); box-shadow: 0 8px 22px #00000012; }
+.button-primary { background: var(--wine); color: #fff5e7; }
+.button-primary:hover { background: #7a2b42; }
+.button-light { background: #f5e5c6; color: #5f2239; border-color: #e9cc9d; margin: 31px auto 0; }
+.button-light:hover { background: #fff4dc; }
+.button-outline { border: 1px solid #d4ad7b; color: #f3ddba; background: transparent; }
+.button-outline:hover { background: rgba(255,255,255,.08); }
+.button-quiet { color: #e6c9a6; background: transparent; border-color: transparent; }
+.footer-section { background: linear-gradient(180deg,#681e35,#481724); color: #f7e6cb; position: relative; overflow: hidden; text-align: center; padding: 99px 0 0; }
+.footer-section::before, .footer-section::after { content:''; width: 360px; height: 540px; position:absolute; border:2px solid #b7875599; border-radius: 50% 50% 0 0 / 34% 34% 0 0; top: 65px; opacity: .17; }
+.footer-section::before { left: -245px; transform: rotate(-24deg); }.footer-section::after { right: -245px; transform: rotate(24deg); }
+.footer-petals { position:absolute; font:400 480px/1 'Cormorant Garamond',serif; color: #ffffff06; top: -190px; right: 30px; pointer-events: none; }
+.footer-lotus { width: 64px; height: auto; margin: 0 auto 17px; }
+.footer-content .eyebrow { color: #d6ac7e; }
+.footer-content h2 { font: 400 clamp(52px, 6.6vw, 82px)/1.04 'Cormorant Garamond',serif; color: #f8e9d7; margin: 16px auto 19px; }
+.footer-content h2 em { color: #e5b789; }
+.footer-monogram { font: 400 clamp(54px, 8.3vw, 111px)/1.16 'Great Vibes',cursive; color: #fff4df; margin: 19px auto 5px; }
+.footer-monogram i { font: italic 40px/1 'Cormorant Garamond',serif; color: #e3b57e; padding: 0 8px; }
+.footer-date { font: 500 20px/1.3 'Cormorant Garamond',serif; letter-spacing: .26em; margin: 17px 0 13px; }
+.footer-place { font: 700 10px/1.5 'DM Sans',sans-serif; letter-spacing: .19em; margin: 0; color: #d4ac7f; }
+.footer-actions { display:flex; align-items:center; flex-wrap:wrap; justify-content:center; gap: 12px; margin: 36px auto 0; }
+.footer-actions .button-primary { background: #f6e4c7; color: var(--wine); }.footer-actions .button-primary:hover { background: #fff7e7; }
+.footer-feedback { display: flex; justify-content: center; align-items: center; gap: 5px; min-height: 35px; font-size: 12px; color: #efd5a8; margin: 8px 0 52px; }
+.footer-bottom { border-top: 1px solid #bd8b663d; padding: 27px 0 35px; }
+.footer-bottom .flower-divider svg { width: 23px; height: 23px; }.footer-bottom .flower-divider span { width: 35px; }
+.footer-bottom p { color: #e8c9a8; letter-spacing: .22em; font-size: 9px; font-weight: 700; margin: 15px 0 13px; }
+.footer-bottom small { font: italic 16px/1 'Cormorant Garamond',serif; color: #d4a982; }
+
+@media (max-width: 900px) {
+  .site-header { padding: 0 23px; height: 68px; }
+  .header-nav { gap: 14px; }.header-nav a { font-size: 9px; letter-spacing: .04em; }
+  .hero-copy { top: 17%; }.hero-copy h1 { font-size: clamp(66px, 11vw, 104px); }
+  .gateway { width: 109vw; }.ceremony-card-content { padding-inline: 16px; }.ceremony-card h3 { font-size: 47px; }
+  .interlude-illustration { right: -130px; opacity: .34; }
+}
+
+@media (max-width: 670px) {
+  .section-container { padding-inline: 21px; }
+  .section-padding { padding-block: 81px; }
+  .site-header { height: 66px; padding: 0 20px; }
+  .header-mark { font-size: 24px; }
+  .mobile-menu-toggle { display: grid; place-items: center; }
+  .header-nav { position: absolute; top: 65px; left: 0; right: 0; background: #fff9f1f5; padding: 24px 26px 28px; display: flex; flex-direction: column; align-items: stretch; gap: 23px; border-bottom: 1px solid #d7b98c; box-shadow: 0 22px 30px #42182522; opacity: 0; pointer-events: none; transform: translateY(-12px); transition: .25s ease; }
+  .header-nav.nav-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .header-nav a { font-size: 11px; letter-spacing: .15em; }.header-nav .header-rsvp { justify-content: center; }
+  .hero-scroll { height: 180svh; min-height: 1000px; }
+  .hero-sticky { min-height: 570px; }
+  .hero-copy { top: 17%; padding: 0 5px; }
+  .hero-top-rule { font-size: 8px; gap: 9px; letter-spacing: .25em; }.hero-top-rule span { width: 19px; }
+  .hero-invitation { font-size: 18px; margin-top: 16px; }
+  .hero-copy h1 { font-size: clamp(61px, 12.2vw, 91px); margin-top: 3px; gap: 6px; }
+  .hero-copy h1 i { font-size: 29px; transform: translateY(3px); }
+  .hero-date { font-size: 9px; letter-spacing: .15em; margin-top: 10px; }.hero-tagline { font-size: 19px; margin-top: 9px; }
+  .gateway { width: 158vw; bottom: -12px; }.scroll-cue { bottom: 14px; font-size: 8px; }
+  .cloud-one { top: 23%; }.cloud-two { top: 43%; }.cloud-three { top: 67%; }
+  .sky-bird { display: none; }
+  .section-heading h2 { font-size: clamp(43px, 10vw, 56px); }
+  .section-subtitle { font-size: 19px; }
+  .eyebrow { font-size: 9px; }
+  .floral-corner { width: 190px; left: -75px; top: 11%; }.floral-corner-flip { left: auto; right: -75px; bottom: 2%; top: auto; }
+  .thin-arch { width: 116%; }
+  .invite-crest { width: 93px; height: 93px; font-size: 38px; }
+  .invitation-section .section-heading h2 { font-size: 44px; }
+  .couple-names { font-size: clamp(56px, 12.4vw, 78px); margin-top: 23px; }
+  .invite-date-label { margin: 31px auto 35px; font-size: 9px; letter-spacing: .08em; }
+  .family-panel { grid-template-columns: 1fr; gap: 23px; padding: 27px 10px; max-width: 400px; }
+  .family-side .eyebrow { margin-bottom: 10px; font-size: 9px; }
+  .family-center { order: 0; }.family-side:first-child { order: 1; }.family-side:last-child { order: 2; }
+  .family-lotus { width: 45px; }.family-names { font-size: 27px; }
+  .countdown-wrapper { margin-top: 44px; }.countdown { gap: 0; grid-template-columns: repeat(4,minmax(0,1fr)); }
+  .countdown-item { padding-inline: 3px; }.countdown-number { font-size: clamp(36px, 9vw, 53px); }.countdown-label { font-size: 8px; letter-spacing: .12em; }
+  .ceremony-intro-date { font-size: 9px; margin-bottom: 25px; gap: 9px; }.ceremony-intro-date .line { width: 13px; }
+  .ceremony-grid { grid-template-columns: 1fr; gap: 23px; max-width: 480px; margin: auto; }
+  .ceremony-card { min-height: 510px; }.ceremony-card-content { min-height: 482px; padding: 25px 12px 53px; }
+  .card-decoration { width: 73px; height: 73px; font-size: 41px; }.ceremony-card h3 { font-size: 53px; }.ceremony-clock { font-size: 57px; }
+  .ceremony-description { font-size: 19px; }.ceremony-footnote { font-size: 21px; margin-top: 25px; }
+  .interlude-section { height: 500px; justify-content: flex-start; }.interlude-illustration { right: -210px; opacity: .21; }
+  .interlude-copy { text-align: center; }.interlude-copy .flower-divider { justify-content: center; }
+  .interlude-copy p { font-size: 9px; }.interlude-copy h2 { font-size: clamp(48px, 10vw, 66px); }
+  .wishes-section { min-height: 600px; }.wish-content { padding-block: 78px 105px; }
+  .wish-content .section-heading h2 { font-size: 49px; }.wish-content .section-subtitle { font-size: 20px; }
+  .venue-card { grid-template-columns: 1fr; margin-top: 35px; }.venue-illustration { min-height: 345px; }.venue-building { transform: translateX(-50%) scale(.78); transform-origin: bottom center; bottom: 50px; }
+  .venue-sun { top: 25px; }.venue-plant { bottom: 50px; transform: scale(.7); transform-origin: bottom left; }.plant-right { transform: scaleX(-.7) scaleY(.7); }
+  .venue-illustration > p { font-size: 8px; bottom: 19px; }
+  .venue-details { min-height: 420px; padding: 42px 20px; }.venue-details h3 { font-size: 47px; }.venue-times-small { font-size: 15px; }
+  .footer-section { padding-top: 77px; }.footer-content h2 { font-size: 54px; }.footer-monogram { font-size: clamp(57px, 11vw, 83px); }
+  .footer-actions { flex-direction: column; align-items: stretch; max-width: 290px; gap: 9px; }.footer-actions .button { width: 100%; }
+}
+
+@media (max-width: 375px) {
+  .hero-copy h1 { font-size: 57px; }.hero-invitation { font-size: 17px; }.hero-tagline { font-size: 17px; }
+  .ceremony-card h3 { font-size: 47px; }.ceremony-clock { font-size: 51px; }
+  .venue-details h3 { font-size: 43px; }.footer-monogram { font-size: 53px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
