@@ -620,3 +620,163 @@ a { color: inherit; }
   .ceremonies-section > .section-container > .ceremony-grid .ceremony-divider {margin:15px 0;}
   .ceremonies-section > .section-container > .ceremony-grid .ceremony-description {font-size:17px;line-height:1.35;}
 }
+
+
+/* Layered mobile-only cinematic cover.
+ * The previous hero remains visible until all four WebP assets have loaded.
+ * Desktop keeps the original invitation artwork.
+ */
+@media (max-width:670px) {
+  .layered-mobile-ready .fusion-hero-art {z-index:7;}
+  .layered-mobile-ready .fusion-hero-art picture {display:none;}
+  .layered-mobile-ready .hero-copy {
+    visibility:visible;
+    z-index:9;
+    top:clamp(56px,8svh,102px);
+    padding-inline:11px;
+    color:#fff9f1;
+    text-shadow:0 2px 11px rgba(38,76,97,.58),0 1px 2px rgba(46,65,76,.65);
+  }
+  .layered-mobile-ready .hero-top-rule {font-size:7px;letter-spacing:.16em;}
+  .layered-mobile-ready .hero-invitation {font-size:clamp(17px,4.7vw,21px);margin-top:9px;}
+  .layered-mobile-ready .hero-copy h1 {
+    font-size:clamp(52px,11.2vw,83px);
+    margin:0 0 2px;
+    gap:5px;
+  }
+  .layered-mobile-ready .hero-copy h1 i {font-size:clamp(23px,5vw,33px);}
+  .layered-mobile-ready .hero-date {font-size:8px;letter-spacing:.1em;}
+  .layered-mobile-ready .hero-tagline {font-size:clamp(16px,4.4vw,20px);margin-top:5px;}
+
+  .mobile-animated-scene {
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    background:#9accdf;
+    pointer-events:none;
+    isolation:isolate;
+    animation:mobile-scene-entrance 1.25s ease-out both;
+  }
+  .mobile-scene-background,
+  .mobile-scene-couple,
+  .mobile-scene-florals {position:absolute;inset:0;width:100%;height:100%;object-fit:fill;user-select:none;}
+  .mobile-scene-background {z-index:0;}
+  .mobile-couple-entrance {
+    position:absolute;
+    inset:0;
+    z-index:2;
+    transform-origin:50% 68%;
+    animation:mobile-couple-approach 2.2s cubic-bezier(.22,.6,.25,1) both,
+              mobile-couple-step 4.8s ease-in-out 2.2s infinite;
+  }
+  .mobile-scene-couple {object-fit:fill;}
+  .mobile-fire-position {
+    position:absolute;
+    z-index:3;
+    width:clamp(96px,31vw,150px);
+    left:50%;
+    top:71%;
+    transform:translateX(-50%);
+    transform-origin:center bottom;
+    animation:mobile-fire-enter 1.4s ease-out .65s both;
+  }
+  .mobile-scene-fire {
+    position:relative;
+    width:100%;
+    height:auto;
+    display:block;
+    filter:drop-shadow(0 0 10px rgba(255,164,45,.3));
+    transform-origin:50% 77%;
+    animation:mobile-flame-flicker 1.65s ease-in-out infinite alternate;
+  }
+  .mobile-fire-glow {
+    position:absolute;
+    top:11%;left:-30%;right:-30%;
+    height:68%;
+    background:radial-gradient(ellipse,rgba(255,202,88,.37),rgba(255,143,41,.14) 45%,transparent 70%);
+    filter:blur(10px);
+    animation:mobile-fire-glimmer 2.1s ease-in-out infinite alternate;
+  }
+  .mobile-scene-florals {
+    z-index:4;
+    object-fit:fill;
+    opacity:.32;
+    animation:mobile-floral-reveal 2s ease-out .5s both,
+              mobile-floral-sway 8.5s ease-in-out 2.5s infinite alternate;
+  }
+  .mobile-scene-floating-petals {position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;}
+  .mobile-scene-floating-petals span {
+    position:absolute;
+    top:-6%;
+    width:9px;height:13px;
+    border-radius:85% 8% 75% 12%;
+    background:linear-gradient(150deg,#e888a2,#eac2b9);
+    box-shadow:0 0 4px rgba(255,229,193,.36);
+    opacity:0;
+    animation:mobile-petal-fall 11s linear infinite;
+  }
+  .mobile-scene-floating-petals span:nth-child(1) {left:11%;animation-delay:-2s;}
+  .mobile-scene-floating-petals span:nth-child(2) {left:30%;animation-delay:-7s;animation-duration:12s;}
+  .mobile-scene-floating-petals span:nth-child(3) {left:52%;animation-delay:-4s;animation-duration:10s;}
+  .mobile-scene-floating-petals span:nth-child(4) {left:73%;animation-delay:-9s;animation-duration:13s;}
+  .mobile-scene-floating-petals span:nth-child(5) {left:89%;animation-delay:-5s;}
+  .mobile-scene-floating-petals span:nth-child(6) {left:46%;animation-delay:-11s;animation-duration:15s;}
+  .layered-mobile-ready .scroll-cue {
+    z-index:11;
+    color:#fffaf0;
+    text-shadow:0 1px 6px rgba(52,35,25,.8);
+  }
+}
+@keyframes mobile-scene-entrance {
+  from {opacity:0;filter:brightness(.78)}
+  to {opacity:1;filter:brightness(1)}
+}
+@keyframes mobile-couple-approach {
+  0% {opacity:0;transform:translate3d(-4%,2.8%,0) scale(.96)}
+  100% {opacity:1;transform:translate3d(0,0,0) scale(1)}
+}
+@keyframes mobile-couple-step {
+  0%,100% {transform:translate3d(0,0,0) rotate(0deg)}
+  30% {transform:translate3d(.5%,-.45%,0) rotate(.12deg)}
+  70% {transform:translate3d(-.3%,.22%,0) rotate(-.1deg)}
+}
+@keyframes mobile-fire-enter {
+  from {opacity:0;translate:0 12px;scale:.89}
+  to {opacity:1;translate:0 0;scale:1}
+}
+@keyframes mobile-flame-flicker {
+  0%,100% {opacity:.92;transform:scale(1,.99) rotate(-.2deg)}
+  40% {opacity:1;transform:scale(1.025,1.035) rotate(.4deg)}
+  75% {opacity:.93;transform:scale(.985,.98) rotate(-.4deg)}
+}
+@keyframes mobile-fire-glimmer {
+  from {opacity:.55;transform:scale(.93)}
+  to {opacity:1;transform:scale(1.07)}
+}
+@keyframes mobile-floral-reveal {
+  from {opacity:0;transform:translateY(-8px)}
+  to {opacity:.32;transform:translateY(0)}
+}
+@keyframes mobile-floral-sway {
+  from {translate:-.3% 0}
+  to {translate:.3% -.25%}
+}
+@keyframes mobile-petal-fall {
+  0% {opacity:0;transform:translate3d(0,0,0) rotate(0deg)}
+  12% {opacity:.72}
+  88% {opacity:.64}
+  100% {opacity:0;transform:translate3d(35px,110svh,0) rotate(390deg)}
+}
+@media (max-width:375px) {
+  .layered-mobile-ready .hero-copy h1 {font-size:clamp(46px,10.7vw,59px);}
+  .layered-mobile-ready .hero-top-rule {letter-spacing:.09em;}
+  .mobile-fire-position {top:72%;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .mobile-animated-scene,.mobile-couple-entrance,.mobile-scene-florals,
+  .mobile-scene-fire,.mobile-fire-position,.mobile-fire-glow,.mobile-scene-floating-petals span {
+    animation:none!important;
+  }
+  .mobile-scene-florals {opacity:.32;}
+  .mobile-scene-floating-petals span {display:none;}
+}
