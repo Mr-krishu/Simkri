@@ -948,22 +948,12 @@ a { color: inherit; }
 }
 
 
-/* Optional music player: appears only when licensed Kudmayi audio is present. */
-.wedding-music-player {position:fixed;right:18px;bottom:calc(19px + env(safe-area-inset-bottom, 0px));z-index:120;display:flex;align-items:flex-end;flex-direction:column;gap:7px;}
-.wedding-music-button {display:flex;align-items:center;gap:10px;border:1px solid rgba(245,226,198,.82);border-radius:999px;background:rgba(88,36,53,.94);color:#fff8ed;padding:9px 14px 9px 9px;box-shadow:0 6px 24px rgba(49,25,31,.26);backdrop-filter:blur(12px);min-height:49px;}
+
+/* Compact floating wedding music control, with a comfortable mobile tap target. */
+.wedding-music-player {position:fixed;right:18px;bottom:calc(19px + env(safe-area-inset-bottom,0px));z-index:120;display:flex;align-items:flex-end;flex-direction:column;gap:7px;}
+.wedding-music-button {display:grid;place-items:center;min-width:52px;min-height:52px;padding:5px;border:1px solid rgba(245,226,198,.85);border-radius:50%;background:rgba(88,36,53,.94);color:#fff8ed;box-shadow:0 6px 24px rgba(49,25,31,.27);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .wedding-music-button:focus-visible {outline:3px solid #d9aa67;outline-offset:3px;}
-.wedding-music-icon {display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#fff5e6;color:#672b42;flex-shrink:0;}
-.wedding-music-label {display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:66px;}
-.wedding-music-label strong {font:600 12px/1.15 'DM Sans',sans-serif;}
-.wedding-music-label small {font:400 10px/1.2 'DM Sans',sans-serif;opacity:.86;}
-.wedding-music-note {opacity:.8;}
-.wedding-music-button.is-playing .wedding-music-note {animation:wedding-music-sway 2.5s ease-in-out infinite;}
-.wedding-music-error {padding:7px 10px;border-radius:8px;background:#fff8ee;color:#6b2f3f;font:500 11px/1.4 'DM Sans',sans-serif;box-shadow:0 3px 12px rgba(60,30,33,.14);}
-@keyframes wedding-music-sway {0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
-@media(max-width:670px){
-  .wedding-music-player {right:12px;bottom:calc(14px + env(safe-area-inset-bottom, 0px));}
-  .wedding-music-button {padding:8px 11px 8px 8px;min-height:44px;gap:7px;}
-  .wedding-music-icon {width:27px;height:27px;}
-  .wedding-music-note {display:none;}
-}
-@media(prefers-reduced-motion:reduce){.wedding-music-button.is-playing .wedding-music-note {animation:none;}}
+.wedding-music-icon {display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#fff5e6;color:#672b42;}
+.wedding-music-button.is-playing {box-shadow:0 6px 24px rgba(49,25,31,.27),0 0 0 3px rgba(211,161,103,.25);}
+.wedding-music-error {max-width:220px;padding:7px 10px;border-radius:8px;background:#fff8ee;color:#6b2f3f;font:500 11px/1.4 'DM Sans',sans-serif;box-shadow:0 3px 12px rgba(60,30,33,.14);}
+@media(max-width:670px) {.wedding-music-player {right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));}.wedding-music-button {min-width:48px;min-height:48px;}.wedding-music-icon {width:34px;height:34px;}}
