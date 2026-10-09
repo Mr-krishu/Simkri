@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type TouchEvent } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Navigation, Pause, Play, Sparkles } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Music2, Navigation, Pause, Play, Sparkles } from 'lucide-react'
 
 // Wedding information lives here for easy customization.
 const WEDDING = {
@@ -968,6 +968,87 @@ function FooterInvitation() {
   )
 }
 
+// Guest-controlled background music. A publicly licensed audio file must be
+// placed at public/audio/kudmayi.mp3. We intentionally avoid autoplay:
+// iOS/Android browsers usually require a direct tap to start audio playback.
+const WEDDING_MUSIC_URL = '/audio/kudmayi.mp3'
+
+function WeddingMusic() {
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const [available, setAvailable] = useState(false)
+  const [playing, setPlaying] = useState(false)
+  const [notice, setNotice] = useState('')
+
+  useEffect(() => {
+    let mounted = true
+    // Render's SPA fallback may return 200 + text/html for an absent file,
+    // so checking only response.ok would incorrectly show a broken player.
+    fetch(WEDDING_MUSIC_URL, { method: 'HEAD' })
+      .then(response => {
+        const type = response.headers.get('content-type')?.toLowerCase() ?? ''
+        if (mounted) {
+          setAvailable(response.ok && (
+            type.startsWith('audio/') || type.includes('octet-stream')
+          ))
+        }
+      })
+      .catch(() => { if (mounted) setAvailable(false) })
+    return () => { mounted = false }
+  }, [])
+
+  const toggleMusic = async () => {
+    const audio = audioRef.current
+    if (!audio) return
+    setNotice('')
+    if (!audio.paused) {
+      audio.pause()
+      return
+    }
+    try {
+      audio.volume = 0.4
+      await audio.play()
+    } catch {
+      setPlaying(false)
+      setNotice('Unable to play music on this device')
+    }
+  }
+
+  if (!available) return null
+
+  return (
+    <div className="wedding-music-player">
+      <audio
+        ref={audioRef}
+        src={WEDDING_MUSIC_URL}
+        loop
+        preload="none"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onError={() => { setAvailable(false); setPlaying(false) }}
+        aria-label="Kudmayi wedding background music"
+      />
+      <button
+        type="button"
+        className={`wedding-music-button ${playing ? 'is-playing' : ''}`}
+        onClick={toggleMusic}
+        aria-label={playing ? 'Pause Kudmayi music' : 'Play Kudmayi music'}
+        aria-pressed={playing}
+        title={playing ? 'Pause Kudmayi' : 'Play Kudmayi'}
+      >
+        <span className="wedding-music-icon" aria-hidden="true">
+          {playing ? <Pause size={17} /> : <Play size={17} />}
+        </span>
+        <span className="wedding-music-label">
+          <strong>Kudmayi</strong>
+          <small>{playing ? 'Now playing' : 'Tap to play'}</small>
+        </span>
+        <Music2 className="wedding-music-note" size={16} aria-hidden="true" />
+      </button>
+      {notice && <span className="wedding-music-error" role="status">{notice}</span>}
+    </div>
+  )
+}
+
 function App() {
   return (
     <div className="site-shell">
@@ -984,6 +1065,7 @@ function App() {
         <Venue />
       </main>
       <FooterInvitation />
+      <WeddingMusic />
       <div className="visually-hidden">{WEDDING.bride} and {WEDDING.groom} invite you to their wedding on {WEDDING.date}.</div>
     </div>
   )
