@@ -303,3 +303,22 @@ a { color: inherit; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Pre-wedding festivities */
+.prewedding-header, .wedding-day-heading { text-align: center; margin: 54px auto 25px; }
+.prewedding-header h3, .wedding-day-heading h3 { font: 500 clamp(36px, 4vw, 51px)/1.1 'Cormorant Garamond',serif; color: var(--wine); margin: 9px 0 0; }
+.prewedding-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.prewedding-card { background: #fffaf1; border: 1px solid #d6b99a; padding: 35px 23px 30px; min-height: 340px; text-align: center; display: flex; flex-direction: column; align-items: center; box-shadow: 0 12px 28px rgba(92, 46, 30, .045); }
+.prewedding-icon { width: 56px; height: 56px; border: 1px solid #bd9a72; border-radius: 50%; display: grid; place-items: center; font-size: 31px; color: #9f6749; }
+.prewedding-date { font: 700 10px/1.6 'DM Sans',sans-serif; letter-spacing: .12em; color: #aa805c; margin: 23px 0 5px; }
+.prewedding-card h4 { font: 500 49px/1.08 'Cormorant Garamond',serif; color: var(--wine); margin: 0 0 8px; }
+.prewedding-time { font: 500 22px/1.2 'Cormorant Garamond',serif; color: #8a583d; margin: 0; }
+.prewedding-divider { width: 62px; height: 1px; background: #cba77a; margin: 21px auto 17px; }
+.prewedding-description { font: 400 18px/1.4 'Cormorant Garamond',serif; color: #806c68; max-width: 270px; margin: 0; }
+.wedding-day-heading { margin-top: 68px; }
+@media (max-width: 760px) {
+  .prewedding-grid { grid-template-columns: 1fr; max-width: 480px; margin: auto; gap: 18px; }
+  .prewedding-card { min-height: auto; padding: 28px 20px 30px; }
+  .wedding-day-heading { margin-top: 57px; }
+}
