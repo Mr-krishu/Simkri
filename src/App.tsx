@@ -212,7 +212,7 @@ function GatewayHero() {
         </div>
         <motion.div className="fusion-hero-art" style={{ scale: fusionScale, opacity: fusionOpacity }} aria-hidden="true">
           <picture>
-            <source media="(max-width: 670px)" srcSet="/fusion-wedding-mobile.webp" type="image/webp" />
+            <source media="(max-width: 670px)" srcSet="/fusion-wedding-mobile.png" type="image/png" />
             <img src="/fusion-wedding-hero.webp" alt="" loading="eager" onLoad={() => setFusionLoaded(true)} />
           </picture>
         </motion.div>
