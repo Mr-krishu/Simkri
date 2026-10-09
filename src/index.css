@@ -884,8 +884,10 @@ a { color: inherit; }
     display:inline-flex;
     position:absolute;
     z-index:14;
-    bottom:calc(49px + env(safe-area-inset-bottom, 0px));
-    right:15px;
+    bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+    left:12px;
+    right:auto;
+    min-height:48px;
     align-items:center;
     justify-content:center;
     gap:5px;
@@ -957,3 +959,21 @@ a { color: inherit; }
 .wedding-music-button.is-playing {box-shadow:0 6px 24px rgba(49,25,31,.27),0 0 0 3px rgba(211,161,103,.25);}
 .wedding-music-error {max-width:220px;padding:7px 10px;border-radius:8px;background:#fff8ee;color:#6b2f3f;font:500 11px/1.4 'DM Sans',sans-serif;box-shadow:0 3px 12px rgba(60,30,33,.14);}
 @media(max-width:670px) {.wedding-music-player {right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));}.wedding-music-button {min-width:48px;min-height:48px;}.wedding-music-icon {width:34px;height:34px;}}
+
+/* Bottom controls: animation on the left, music on the right, scroll cue above.
+   Safe-area offsets keep both buttons away from phone gesture/navigation bars. */
+@media(max-width:670px){
+  .layered-mobile-ready .scroll-cue {
+    bottom:calc(83px + env(safe-area-inset-bottom, 0px));
+  }
+  .layered-mobile-ready .hero-motion-toggle {
+    left:calc(12px + env(safe-area-inset-left, 0px));
+    right:auto;
+    bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+    white-space:nowrap;
+  }
+  .wedding-music-player {
+    right:calc(12px + env(safe-area-inset-right, 0px));
+    bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+}
