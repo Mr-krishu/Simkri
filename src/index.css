@@ -591,3 +591,32 @@ a { color: inherit; }
   .ceremony-intro-date {margin-bottom:14px;}
 }
 @media(prefers-reduced-motion:reduce) {.event-carousel-dot {transition:none;}}
+
+
+/* Wedding-day ceremonies are always distinct: never part of the rotating mobile slides. */
+@media(max-width:670px) {
+  .ceremonies-section > .section-container > .ceremony-grid {
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:18px;
+    max-width:480px;
+    margin-inline:auto;
+  }
+  .ceremonies-section > .section-container > .ceremony-grid > .ceremony-card {
+    display:block;
+    min-height:410px;
+    width:100%;
+    padding:10px;
+  }
+  .ceremonies-section > .section-container > .ceremony-grid > .ceremony-card > .ceremony-card-content {
+    min-height:386px;
+    padding:20px 13px 47px;
+  }
+  .ceremonies-section > .section-container > .ceremony-grid .card-decoration {
+    width:58px;height:58px;font-size:34px;margin-bottom:8px;
+  }
+  .ceremonies-section > .section-container > .ceremony-grid .ceremony-card h3 {font-size:43px;margin-top:10px;}
+  .ceremonies-section > .section-container > .ceremony-grid .ceremony-clock {font-size:43px;}
+  .ceremonies-section > .section-container > .ceremony-grid .ceremony-divider {margin:15px 0;}
+  .ceremonies-section > .section-container > .ceremony-grid .ceremony-description {font-size:17px;line-height:1.35;}
+}
