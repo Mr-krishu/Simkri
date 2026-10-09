@@ -43,6 +43,46 @@ const PRE_WEDDING_EVENTS = [
   },
 ] as const
 
+// These rituals belong specifically to the groom's family.
+// Their times and venues have not been confirmed yet.
+const GROOM_SIDE_EVENTS = [
+  {
+    name: 'Matkor (Matikora)',
+    date: 'FRIDAY · 04 DECEMBER 2026',
+    time: 'Time to be confirmed',
+    icon: '✦',
+    description: 'The auspicious digging of soil to prepare the wedding altar (vedi).',
+  },
+  {
+    name: 'Haldi (Ubtan)',
+    date: 'SATURDAY · 05 DECEMBER 2026',
+    time: 'Time to be confirmed',
+    icon: '☀',
+    description: 'Applying turmeric paste to the bride and groom for a radiant glow and blessings.',
+  },
+  {
+    name: 'Aama Mahua',
+    date: 'SATURDAY · 05 DECEMBER 2026',
+    time: 'Time to be confirmed',
+    icon: '❀',
+    description: 'A beautiful ritual in which the mother symbolically marries mango and mahua trees to seek nature\'s blessings for her child.',
+  },
+  {
+    name: 'Mehndi',
+    date: 'SUNDAY · 06 DECEMBER 2026',
+    time: 'Time to be confirmed',
+    icon: '❧',
+    description: 'Celebrating the art of mehndi with beautiful henna designs on the bride\'s hands and feet.',
+  },
+] as const
+
+const COUPLE_PHOTOS = [
+  { src: '/photos/staircase-candid.webp', alt: 'Simran and Krishna laughing together on a staircase', caption: 'The moments between the moments' },
+  { src: '/photos/seated-portrait.webp', alt: 'Simran and Krishna sitting together on the stairs', caption: 'Always better together' },
+  { src: '/photos/celebration.webp', alt: 'Simran and Krishna celebrating beside a cake', caption: 'A little celebration, a lot of love' },
+  { src: '/photos/golden-evening.webp', alt: 'Simran and Krishna smiling in front of a golden backdrop', caption: 'Golden memories' },
+] as const
+
 const TARGET = new Date('2026-12-09T10:00:00+05:30').getTime()
 
 function getRemaining() {
@@ -257,12 +297,62 @@ function saveCalendar() {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
+function CoupleGallery() {
+  return (
+    <section className="photo-gallery-section section-padding" id="our-moments">
+      <div className="section-container">
+        <SectionHeading eyebrow="SIMRAN & KRISHNA" title="Our little moments" subtitle="Some of our favourite memories, before our forever begins." />
+        <div className="couple-photo-grid">
+          {COUPLE_PHOTOS.map((photo, index) => (
+            <motion.figure className="couple-photo-card" key={photo.src}
+              initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: .15 }} transition={{ duration: .65, delay: index * .08 }}>
+              <div className="couple-photo-frame">
+                <img loading="lazy" src={photo.src} alt={photo.alt}
+                  onError={(event) => { event.currentTarget.style.display = 'none' }} />
+                <span className="couple-photo-fallback" aria-hidden="true">S <i>&amp;</i> K</span>
+              </div>
+              <figcaption>{photo.caption}</figcaption>
+            </motion.figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function GroomSideFunctions() {
+  return (
+    <section className="groom-section section-padding" id="groom-traditions">
+      <div className="section-container">
+        <SectionHeading eyebrow="FROM THE GROOM'S FAMILY" title="Traditions close to our hearts"
+          subtitle="Honouring the beautiful rituals of our family before Simran and Krishna begin their new chapter together." />
+        <div className="groom-events-grid">
+          {GROOM_SIDE_EVENTS.map((event, index) => (
+            <motion.article className="groom-event-card" key={event.name}
+              initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: .2 }} transition={{ duration: .55, delay: index * .07 }}>
+              <span className="groom-event-icon" aria-hidden="true">{event.icon}</span>
+              <p className="groom-event-date">{event.date}</p>
+              <h3>{event.name}</h3>
+              <p className="groom-event-time">{event.time}</p>
+              <div className="groom-event-rule" />
+              <p className="groom-event-description">{event.description}</p>
+            </motion.article>
+          ))}
+        </div>
+        <p className="groom-event-note">Times and locations for the groom-side functions will be shared once confirmed.</p>
+      </div>
+    </section>
+  )
+}
+
 function Ceremonies() {
   return (
     <section id="celebrations" className="ceremonies-section section-padding">
       <FloralCorner />
       <div className="section-container">
-        <SectionHeading eyebrow="A CELEBRATION OF LOVE & TRADITIONS" title="Our wedding festivities" subtitle="Three beautiful days of joy, music, blessings and togetherness, leading to our forever." />
+        <SectionHeading eyebrow="A CELEBRATION OF LOVE & TRADITIONS" title="Our wedding festivities" subtitle="From cherished family traditions to joyful celebrations, leading to our forever." />
         <div className="prewedding-header">
           <p className="eyebrow">06 & 07 DECEMBER 2026</p>
           <h3>Before the big day</h3>
@@ -483,6 +573,8 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const links = [
     { href: '#invitation', label: 'Our invitation' },
+    { href: '#our-moments', label: 'Our moments' },
+    { href: '#groom-traditions', label: 'Groom-side rituals' },
     { href: '#celebrations', label: 'The celebrations' },
     { href: '#venue', label: 'The venue' },
     { href: '#wishes', label: 'Send blessings' },
@@ -506,6 +598,8 @@ function App() {
       <GatewayHero />
       <main>
         <Invitation />
+        <CoupleGallery />
+        <GroomSideFunctions />
         <Ceremonies />
         <Interlude />
         <WishLanterns />
