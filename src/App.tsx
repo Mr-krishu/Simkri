@@ -435,8 +435,9 @@ const LOVE_STORY_CHAPTERS = [
 ] as const
 
 function OurStory() {
+  const [storyOpen, setStoryOpen] = useState(false)
   return (
-    <section className="story-section section-padding" id="our-story" aria-labelledby="our-story-title">
+    <section className={`story-section section-padding ${storyOpen ? 'story-expanded' : ''}`} id="our-story" aria-labelledby="our-story-title">
       <FloralCorner />
       <div className="section-container story-content">
         <motion.div
@@ -453,9 +454,16 @@ function OurStory() {
             We were friends first, best friends next, and somewhere along the way, love found its moment.
           </p>
           <div className="story-monogram" aria-hidden="true">S <span>♥</span> K</div>
+          <p className="story-mobile-teaser">From college best friends, to a second chance in Chandigarh, to finding love in Bangalore.</p>
+          <button type="button" className="story-read-button"
+            aria-controls="story-timeline" aria-expanded={storyOpen}
+            onClick={() => setStoryOpen(value => !value)}>
+            {storyOpen ? 'Close our story' : 'Read our love story'}
+            <ChevronRight size={18} aria-hidden="true" />
+          </button>
         </motion.div>
 
-        <div className="story-timeline" aria-label="The milestones in our love story">
+        <div className="story-timeline" id="story-timeline" aria-label="The milestones in our love story">
           {LOVE_STORY_CHAPTERS.map((chapter, index) => (
             <motion.article
               className="story-milestone"
@@ -504,6 +512,7 @@ function WeddingFestivitiesIntro() {
 }
 
 function GroomSideFunctions() {
+  const [openEvent, setOpenEvent] = useState<string | null>(null)
   return (
     <section className="groom-section section-padding" id="groom-traditions">
       <div className="section-container">
@@ -511,7 +520,7 @@ function GroomSideFunctions() {
           subtitle="Honouring Krishna's family's beautiful traditions before the wedding day." />
         <div className="groom-events-grid">
           {GROOM_SIDE_EVENTS.map((event, index) => (
-            <motion.article className="groom-event-card" key={event.name}
+            <motion.article className={`groom-event-card ${openEvent === event.name ? 'event-expanded' : ''}`} key={event.name}
               initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: .2 }} transition={{ duration: .55, delay: index * .07 }}>
               <span className="groom-event-icon" aria-hidden="true">{event.icon}</span>
@@ -520,6 +529,12 @@ function GroomSideFunctions() {
               <p className="groom-event-time">{event.time}</p>
               <div className="groom-event-rule" />
               <p className="groom-event-description">{event.description}</p>
+              <button className="event-details-toggle" type="button"
+                aria-expanded={openEvent === event.name}
+                aria-label={`${openEvent === event.name ? 'Hide' : 'Show'} details for ${event.name}`}
+                onClick={() => setOpenEvent(current => current === event.name ? null : event.name)}>
+                {openEvent === event.name ? 'Less' : 'Details'} <ChevronRight size={15} aria-hidden="true" />
+              </button>
             </motion.article>
           ))}
         </div>
@@ -530,6 +545,7 @@ function GroomSideFunctions() {
 }
 
 function Ceremonies() {
+  const [openEvent, setOpenEvent] = useState<string | null>(null)
   return (
     <section id="bride-traditions" className="ceremonies-section section-padding">
       <FloralCorner />
@@ -541,7 +557,7 @@ function Ceremonies() {
         <div className="prewedding-grid">
           {PRE_WEDDING_EVENTS.map((event, index) => (
             <motion.article
-              className="prewedding-card"
+              className={`prewedding-card ${openEvent === event.name ? 'event-expanded' : ''}`}
               key={event.name}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -554,6 +570,12 @@ function Ceremonies() {
               <p className="prewedding-time">{event.time}</p>
               <span className="prewedding-divider" />
               <p className="prewedding-description">{event.description}</p>
+              <button className="event-details-toggle" type="button"
+                aria-expanded={openEvent === event.name}
+                aria-label={`${openEvent === event.name ? 'Hide' : 'Show'} details for ${event.name}`}
+                onClick={() => setOpenEvent(current => current === event.name ? null : event.name)}>
+                {openEvent === event.name ? 'Less' : 'Details'} <ChevronRight size={15} aria-hidden="true" />
+              </button>
             </motion.article>
           ))}
         </div>
