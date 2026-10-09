@@ -556,17 +556,24 @@ function Venue() {
             <a className="venue-photo-link" href="https://www.sohibanquets.com/gallery/" target="_blank" rel="noopener noreferrer"
               aria-label="View real Sohi Banquets venue photographs">
               <img
-                src="https://www.sohibanquets.com/wp-content/uploads/2022/04/1-1.jpeg"
-                alt="Real photograph of the Palm Court Lawn at Sohi Banquets, Zirakpur"
+                src="/sohi-banquet-hall.webp"
+                alt="Sohi Banquets wedding hall with warm orange floral ceiling decorations and an illuminated reception floor"
                 loading="lazy"
-                referrerPolicy="no-referrer"
-                onError={event => { event.currentTarget.style.display = 'none' }}
+                onError={event => {
+                  const img = event.currentTarget
+                  if (!img.dataset.fallback) {
+                    img.dataset.fallback = 'true'
+                    img.src = 'https://www.sohibanquets.com/wp-content/uploads/2022/04/1-1.jpeg'
+                  } else {
+                    img.style.display = 'none'
+                  }
+                }}
               />
               <span className="venue-photo-fallback">View photos of the venue <ArrowUpRight size={20} /></span>
             </a>
             <figcaption>
-              Sohi Banquets · Palm Court Lawn — published venue photo.
-              <span> Please confirm your booked space matches this photo.</span>
+              Sohi Banquets · Wedding Hall
+              <span>Celebrating our forever in a place filled with warmth and joy.</span>
             </figcaption>
           </figure>
           <div className="venue-details">
@@ -578,7 +585,7 @@ function Venue() {
             <p className="venue-time">Wednesday, 09 December 2026</p>
             <p className="venue-times-small">Sikh ceremony: 10–11 AM &nbsp; · &nbsp; Hindu ceremony: 4 PM onwards</p>
             <a className="button button-primary" href={WEDDING.maps} target="_blank" rel="noopener noreferrer"><Navigation size={17} /> Open in Google Maps <ArrowUpRight size={17}/></a>
-            <p className="venue-map-note">Opens the location link supplied by the couple. The venue photograph is a reference from Sohi Banquets' gallery.</p>
+            <p className="venue-map-note">Opens the venue location shared by the couple.</p>
           </div>
         </div>
       </div>
