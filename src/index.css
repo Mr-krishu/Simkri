@@ -397,15 +397,14 @@ a { color: inherit; }
   text-shadow: 0 1px 8px rgba(50,30,30,.8);
 }
 @media (max-width: 670px) {
-  /* The mobile crop intentionally contains only the ceremony illustration.
-     Keep the real HTML names/date legible above it and accessible on phones. */
-  .fusion-hero-art { inset: auto 0 0; height: 63%; z-index: 5; }
-  .fusion-hero-art img { object-fit: cover; object-position: center bottom; }
-  .fusion-loaded .hero-copy { visibility: visible; }
-  .fusion-loaded .sky-layer { visibility: visible; }
-  .fusion-loaded .hero-copy { top: 12%; }
-  .fusion-loaded .hero-copy h1 { text-shadow: 0 3px 12px rgba(49,74,78,.18); }
-  .fusion-loaded .scroll-cue { color: #fff9ef; }
+  /* The portrait invitation includes both religious symbols and its own lettering.
+     Show the entire composition rather than cropping it or duplicating text. */
+  .fusion-hero-art { inset: 0; height: 100%; z-index: 7; }
+  .fusion-hero-art picture { background: #88c8e0; }
+  .fusion-hero-art img { object-fit: contain; object-position: center center; }
+  .fusion-loaded .hero-copy { visibility: hidden; }
+  .fusion-loaded .sky-layer { visibility: hidden; }
+  .fusion-loaded .scroll-cue { color: #fff9ef; text-shadow: 0 1px 8px rgba(40,25,20,.85); }
 }
 @media (prefers-reduced-motion: reduce) {
   .fusion-hero-art { animation: none; }
