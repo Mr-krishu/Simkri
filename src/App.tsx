@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Menu, Navigation, Sparkles, X } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Navigation, Sparkles } from 'lucide-react'
 
 // Wedding information lives here for easy customization.
 const WEDDING = {
@@ -783,33 +783,9 @@ function FooterInvitation() {
   )
 }
 
-function Header() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const links = [
-    { href: '#invitation', label: 'Our invitation' },
-    { href: '#our-story', label: 'Our story' },
-    { href: '#groom-traditions', label: 'Groom-side functions' },
-    { href: '#bride-traditions', label: 'Bride-side functions' },
-    { href: '#celebrations', label: 'Wedding day' },
-    { href: '#venue', label: 'The venue' },
-    { href: '#wishes', label: 'Send blessings' },
-  ]
-  return (
-    <header className="site-header">
-      <a href="#home" className="header-mark" aria-label="Simran and Krishna, back to top">S <span>♡</span> K</a>
-      <nav className={`header-nav ${menuOpen ? 'nav-open' : ''}`} aria-label="Primary navigation">
-        {links.map((link) => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}</a>)}
-        <a className="header-rsvp" href="#save-the-date" onClick={() => setMenuOpen(false)}>SAVE THE DATE <ArrowUpRight size={13}/></a>
-      </nav>
-      <button className="mobile-menu-toggle" type="button" aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button>
-    </header>
-  )
-}
-
 function App() {
   return (
     <div className="site-shell">
-      <Header />
       <GatewayHero />
       <main>
         <Invitation />
