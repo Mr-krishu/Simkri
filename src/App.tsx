@@ -19,6 +19,30 @@ const WEDDING = {
   brideMother: 'Surinder Kaur Jabbal',
 }
 
+const PRE_WEDDING_EVENTS = [
+  {
+    name: 'Jagoo',
+    date: 'SUNDAY · 06 DECEMBER 2026',
+    time: '5:00 PM onwards',
+    icon: '✧',
+    description: 'An evening of music, light, laughter and joyful celebrations.',
+  },
+  {
+    name: 'Mehndi',
+    date: 'MONDAY · 07 DECEMBER 2026',
+    time: '11:00 AM',
+    icon: '❀',
+    description: 'Henna, heartfelt moments and festive colours with the people we love.',
+  },
+  {
+    name: 'Haldi',
+    date: 'MONDAY · 07 DECEMBER 2026',
+    time: '5:00 PM',
+    icon: '☀',
+    description: 'Golden hues, happy blessings and sunshine before our big day.',
+  },
+] as const
+
 const TARGET = new Date('2026-12-09T10:00:00+05:30').getTime()
 
 function getRemaining() {
@@ -207,6 +231,12 @@ function getIcsContent() {
   const uidBase = 'simran-krishna-20261209-wedding'
   return [
     'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Simran and Krishna//Wedding Invitation//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+    'BEGIN:VEVENT', `UID:jagoo-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261206T113000Z',
+    'SUMMARY:Simran & Krishna - Jagoo', 'DESCRIPTION:Jagoo celebrations begin at 5:00 PM IST onwards. Venue to be confirmed.', 'END:VEVENT',
+    'BEGIN:VEVENT', `UID:mehndi-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261207T053000Z',
+    'SUMMARY:Simran & Krishna - Mehndi', 'DESCRIPTION:Mehndi begins at 11:00 AM IST. Venue to be confirmed.', 'END:VEVENT',
+    'BEGIN:VEVENT', `UID:haldi-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261207T113000Z',
+    'SUMMARY:Simran & Krishna - Haldi', 'DESCRIPTION:Haldi begins at 5:00 PM IST. Venue to be confirmed.', 'END:VEVENT',
     'BEGIN:VEVENT', `UID:sikh-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261209T043000Z', 'DTEND:20261209T053000Z',
     'SUMMARY:Simran & Krishna - Sikh Wedding', `LOCATION:${location}`, 'DESCRIPTION:Sikh wedding ceremony from 10:00 AM to 11:00 AM IST. See invitation for venue map.', 'END:VEVENT',
     'BEGIN:VEVENT', `UID:hindu-${uidBase}@invitation`, `DTSTAMP:${stamp}`, 'DTSTART:20261209T103000Z',
@@ -232,7 +262,34 @@ function Ceremonies() {
     <section id="celebrations" className="ceremonies-section section-padding">
       <FloralCorner />
       <div className="section-container">
-        <SectionHeading eyebrow="A DAY OF TWO BEAUTIFUL TRADITIONS" title="Our celebrations" subtitle="One unforgettable day, two sacred ceremonies — and a lifetime of love to follow." />
+        <SectionHeading eyebrow="A CELEBRATION OF LOVE & TRADITIONS" title="Our wedding festivities" subtitle="Three beautiful days of joy, music, blessings and togetherness, leading to our forever." />
+        <div className="prewedding-header">
+          <p className="eyebrow">06 & 07 DECEMBER 2026</p>
+          <h3>Before the big day</h3>
+        </div>
+        <div className="prewedding-grid">
+          {PRE_WEDDING_EVENTS.map((event, index) => (
+            <motion.article
+              className="prewedding-card"
+              key={event.name}
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: .2 }}
+              transition={{ duration: .55, delay: index * .1 }}
+            >
+              <span className="prewedding-icon" aria-hidden="true">{event.icon}</span>
+              <p className="prewedding-date">{event.date}</p>
+              <h4>{event.name}</h4>
+              <p className="prewedding-time">{event.time}</p>
+              <span className="prewedding-divider" />
+              <p className="prewedding-description">{event.description}</p>
+            </motion.article>
+          ))}
+        </div>
+        <div className="wedding-day-heading">
+          <p className="eyebrow">THE WEDDING DAY</p>
+          <h3>Two traditions, one forever</h3>
+        </div>
         <div className="ceremony-intro-date"><span className="line" /> WEDNESDAY, 09 DECEMBER 2026 <span className="line" /></div>
         <div className="ceremony-grid">
           <motion.article className="ceremony-card sikh-card" initial={{opacity: 0, y: 30}} whileInView={{opacity: 1, y: 0}} viewport={{once: true, amount: .2}} transition={{duration: .6}}>
@@ -354,7 +411,7 @@ function FooterInvitation() {
   const reset = () => window.setTimeout(() => setFeedback(''), 2800)
 
   const share = async () => {
-    const message = `You are invited to the wedding of Simran Jabbal & Krishna Kant on 9 December 2026 at Sohi Banquet · Palm Resorts! ${window.location.href}`
+    const message = `Celebrate with Simran Jabbal & Krishna Kant! Jagoo: 6 Dec, 5 PM onwards. Mehndi: 7 Dec, 11 AM. Haldi: 7 Dec, 5 PM. Wedding: 9 Dec 2026 at Sohi Banquet · Palm Resorts. ${window.location.href}`
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Simran & Krishna — Wedding Invitation', text: message, url: window.location.href })
@@ -426,7 +483,7 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const links = [
     { href: '#invitation', label: 'Our invitation' },
-    { href: '#celebrations', label: 'The ceremonies' },
+    { href: '#celebrations', label: 'The celebrations' },
     { href: '#venue', label: 'The venue' },
     { href: '#wishes', label: 'Send blessings' },
   ]
