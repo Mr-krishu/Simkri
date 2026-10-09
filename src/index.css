@@ -557,3 +557,37 @@ a { color: inherit; }
   .ceremony-grid {gap:14px;}
 }
 @media(prefers-reduced-motion:reduce){.story-read-button svg,.event-details-toggle svg{transition:none;}}
+
+
+/* Mobile wedding festivities: one card per group, swipeable and automatically rotating. */
+.event-carousel-controls {display:none;}
+@media(max-width:670px) {
+  .event-carousel-shell {width:100%;min-width:0;}
+  .event-carousel-shell .groom-events-grid,
+  .event-carousel-shell .prewedding-grid,
+  .event-carousel-shell .ceremony-grid {display:block;width:100%;margin-top:15px;}
+  .event-carousel-shell .groom-event-card,
+  .event-carousel-shell .prewedding-card,
+  .event-carousel-shell .ceremony-card {display:none;width:100%;margin:0 auto;}
+  .event-carousel-shell .groom-event-card.is-current,
+  .event-carousel-shell .prewedding-card.is-current {display:flex;}
+  .event-carousel-shell .ceremony-card.is-current {display:block;}
+  .event-carousel-shell .groom-event-card,
+  .event-carousel-shell .prewedding-card {min-height:190px;justify-content:center;}
+  .event-carousel-shell .ceremony-card {min-height:390px;max-width:480px;padding:10px;}
+  .event-carousel-shell .ceremony-card-content {min-height:365px;padding:20px 13px 45px;}
+  .event-carousel-shell .card-decoration {width:54px;height:54px;font-size:31px;margin-bottom:9px;}
+  .event-carousel-shell .ceremony-card h3 {font-size:43px;margin-top:10px;}
+  .event-carousel-shell .ceremony-clock {font-size:43px;}
+  .event-carousel-shell .ceremony-divider {margin:14px 0;}
+  .event-carousel-shell .ceremony-description {font-size:17px;line-height:1.35;}
+  .event-carousel-controls {display:flex;align-items:center;justify-content:center;gap:20px;margin:13px auto 0;}
+  .event-carousel-arrow {display:grid;place-items:center;width:36px;height:36px;border:1px solid #c7a887;border-radius:50%;color:var(--wine);background:#fff8ee;}
+  .event-carousel-arrow:focus-visible,.event-carousel-dot:focus-visible {outline:3px solid var(--wine);outline-offset:3px;}
+  .event-carousel-dots {display:flex;align-items:center;justify-content:center;gap:10px;}
+  .event-carousel-dot {width:10px;height:10px;border-radius:50%;padding:0;border:1px solid #b99573;background:#ebd7bd;transition:background .2s,transform .2s;}
+  .event-carousel-dot.is-current {background:var(--wine);border-color:var(--wine);transform:scale(1.2);}
+  .wedding-day-heading {margin-top:30px;}
+  .ceremony-intro-date {margin-bottom:14px;}
+}
+@media(prefers-reduced-motion:reduce) {.event-carousel-dot {transition:none;}}
