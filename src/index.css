@@ -426,3 +426,61 @@ a { color: inherit; }
   .ceremonies-section { padding-top: 35px; }
   .venue-photo-link { min-height: 310px; }
 }
+
+
+/* A new chapter begins: ceremonial reveal */
+.hero-reveal { isolation: isolate; overflow: hidden; padding: 72px 20px 38px; background: radial-gradient(ellipse at 50% 40%,#fffaf0 0%,#f4e5cc 62%,#dec29d 100%); }
+.reveal-arch { position:absolute;pointer-events:none;border:1px solid rgba(180,132,77,.47);border-radius:48% 48% 0 0 / 19% 19% 0 0;top:6%;bottom:-13%;left:50%;transform:translateX(-50%); }
+.reveal-arch-outer {width:min(84vw,850px);box-shadow:inset 0 0 0 11px rgba(255,255,255,.11),0 0 0 8px rgba(166,114,64,.055);}
+.reveal-arch-inner {width:min(79vw,795px);top:8%;bottom:-15%;opacity:.65;}
+.reveal-content {position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:670px;margin:auto;}
+.reveal-kicker {font:700 10px/1.5 'DM Sans',sans-serif;letter-spacing:.22em;color:#976b49;margin:0 0 16px;}
+.reveal-ring {width:88px;height:88px;margin:0 auto 18px;background:rgba(255,250,239,.5);gap:7px;display:flex;align-items:center;justify-content:center;color:#9b563d;font:500 30px/1 'Cormorant Garamond',serif;}
+.reveal-ring svg {color:#b98e5b;}
+.reveal-eyebrow {color:#986d4c;letter-spacing:.21em;line-height:1.5;}
+.reveal-title {max-width:650px;font:400 clamp(47px,6.3vw,83px)/1.02 'Cormorant Garamond',serif;margin:9px 0 8px;color:var(--wine);}
+.reveal-title em {display:inline;color:#a47052;font-weight:400;}
+.reveal-floral-rule {display:flex;align-items:center;justify-content:center;gap:12px;color:#b88e62;font-size:18px;margin:8px 0 10px;}
+.reveal-floral-rule span {width:56px;height:1px;background:rgba(174,122,80,.58);}
+.reveal-copy {font:italic clamp(20px,2.3vw,26px)/1.3 'Cormorant Garamond',serif;color:#7b6060;margin:5px 0 18px;max-width:560px;}
+.reveal-symbols {display:flex;align-items:center;justify-content:center;gap:27px;color:#8a4d3a;margin:4px 0 15px;}
+.reveal-symbol {display:grid;place-items:center;width:68px;height:68px;border:1px solid rgba(181,139,86,.54);border-radius:50%;background:#fffaf177;font:400 34px/1 Georgia,serif;}
+.reveal-symbol-center {color:#be907d;font-size:19px;}
+.reveal-date {font:700 10px/1.4 'DM Sans',sans-serif;letter-spacing:.23em;color:#987355;margin:0 0 8px;}
+.reveal-signature {font:400 clamp(39px,5vw,58px)/1 'Great Vibes',cursive;color:var(--wine);margin:0;}
+.reveal-signature span {color:#bd9468;font:italic 26px/1 'Cormorant Garamond',serif;padding:0 7px;}
+.reveal-footer {position:absolute;bottom:25px;z-index:2;color:#a77a5a;letter-spacing:.2em;font:700 9px/1.4 'DM Sans',sans-serif;white-space:nowrap;}
+.reveal-ambient {position:absolute;bottom:4%;width:210px;opacity:.2;color:#9f704e;pointer-events:none;}
+.reveal-ambient svg {width:100%;height:auto;stroke-width:.7;}
+.reveal-ambient-left {left:-25px;transform:rotate(-25deg);}
+.reveal-ambient-right {right:-25px;transform:scaleX(-1) rotate(-25deg);}
+.reveal-floating-petals {position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.reveal-floating-petals span {position:absolute;animation:reveal-float 9s ease-in-out infinite alternate;color:#c49683;font-size:22px;opacity:.42;}
+.reveal-floating-petals span:nth-child(1) {left:11%;top:19%;}
+.reveal-floating-petals span:nth-child(2) {right:14%;top:27%;animation-delay:-3s;}
+.reveal-floating-petals span:nth-child(3) {left:17%;bottom:23%;animation-delay:-4s;}
+.reveal-floating-petals span:nth-child(4) {right:19%;bottom:14%;animation-delay:-1s;}
+.reveal-floating-petals span:nth-child(5) {left:49%;top:8%;animation-delay:-5s;}
+@keyframes reveal-float {from{transform:translate3d(0,0,0) rotate(-12deg)}to{transform:translate3d(12px,-28px,0) rotate(24deg)}}
+@media(max-width:670px) {
+ .hero-reveal {padding:78px 20px 35px;justify-content:center;}
+ .reveal-arch-outer {width:94vw;top:9%;}
+ .reveal-arch-inner {width:88vw;top:11%;}
+ .reveal-kicker {font-size:8px;letter-spacing:.13em;margin-bottom:13px;}
+ .reveal-ring {width:70px;height:70px;margin-bottom:16px;font-size:25px;}
+ .reveal-title {font-size:clamp(48px,12vw,65px);}
+ .reveal-copy {font-size:21px;margin-bottom:14px;}
+ .reveal-symbols {gap:19px;margin-bottom:15px;}
+ .reveal-symbol {width:56px;height:56px;font-size:30px;}
+ .reveal-ambient {width:125px;}
+ .reveal-footer {bottom:16px;font-size:7px;letter-spacing:.12em;}
+}
+@media(max-height:720px) {
+ .reveal-ring {width:64px;height:64px;margin-bottom:8px;}
+ .reveal-kicker {margin-bottom:8px;}
+ .reveal-title {font-size:clamp(41px,5vw,62px);}
+ .reveal-copy {margin-bottom:7px;font-size:19px;}
+ .reveal-symbol {width:50px;height:50px;font-size:28px;}
+ .reveal-symbols {margin-bottom:8px;}
+}
+@media(prefers-reduced-motion:reduce) {.reveal-floating-petals span {animation:none;}}
