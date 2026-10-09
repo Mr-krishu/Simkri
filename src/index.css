@@ -409,3 +409,20 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .fusion-hero-art { animation: none; }
 }
+
+/* Festivities overview now precedes both families' ceremonies. */
+.festivities-introduction { padding: clamp(85px, 9vw, 132px) 0 34px; background: #fff7ef; }
+.groom-section { padding-top: 48px; }
+.ceremonies-section { padding-top: 60px; }
+.venue-photograph { position: relative; margin: 0; min-width: 0; background: #ead7bb; display: flex; flex-direction: column; }
+.venue-photo-link { position: relative; display: block; min-height: 390px; flex: 1; overflow: hidden; text-decoration: none; }
+.venue-photo-link img { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.venue-photo-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 22px; text-align: center; color: #641f35; font: 500 30px/1.2 'Cormorant Garamond',serif; }
+.venue-photograph figcaption { font: 500 12px/1.5 'DM Sans',sans-serif; color: #715a4b; padding: 13px 18px; background: #fff5e6; }
+.venue-photograph figcaption span { display: block; font-weight: 400; margin-top: 3px; }
+@media (max-width: 670px) {
+  .festivities-introduction { padding: 75px 0 18px; }
+  .groom-section { padding-top: 28px; }
+  .ceremonies-section { padding-top: 35px; }
+  .venue-photo-link { min-height: 310px; }
+}
