@@ -370,6 +370,20 @@ function CoupleGallery() {
   )
 }
 
+function WeddingFestivitiesIntro() {
+  return (
+    <section className="festivities-introduction" id="celebrations">
+      <div className="section-container">
+        <SectionHeading
+          eyebrow="A CELEBRATION OF LOVE & TRADITIONS"
+          title="Our wedding festivities"
+          subtitle="From our families' cherished rituals to two sacred wedding ceremonies — every moment brings us closer to forever."
+        />
+      </div>
+    </section>
+  )
+}
+
 function GroomSideFunctions() {
   return (
     <section className="groom-section section-padding" id="groom-traditions">
@@ -398,11 +412,10 @@ function GroomSideFunctions() {
 
 function Ceremonies() {
   return (
-    <section id="celebrations" className="ceremonies-section section-padding">
+    <section id="bride-traditions" className="ceremonies-section section-padding">
       <FloralCorner />
       <div className="section-container">
-        <SectionHeading eyebrow="A CELEBRATION OF LOVE & TRADITIONS" title="Our wedding festivities" subtitle="From cherished family traditions to joyful celebrations, leading to our forever." />
-        <div className="prewedding-header" id="bride-traditions">
+        <div className="prewedding-header">
           <p className="eyebrow">BRIDE'S FAMILY · 06 & 07 DECEMBER 2026</p>
           <h3>Bride-side functions</h3>
         </div>
@@ -515,19 +528,23 @@ function Venue() {
       <div className="section-container">
         <SectionHeading eyebrow="WHERE WE BEGIN OUR FOREVER" title="Find your way to us" subtitle="Your presence will make our celebration complete." />
         <div className="venue-card">
-          <div className="venue-illustration" aria-hidden="true">
-            <div className="venue-sun" />
-            <div className="venue-wind-line line-one"/><div className="venue-wind-line line-two" />
-            <div className="venue-building">
-              <div className="venue-building-dome" />
-              <div className="venue-building-roof" />
-              <div className="venue-building-walls"><span/><span/><span/></div>
-              <div className="venue-building-steps" />
-            </div>
-            <div className="venue-plant plant-left"><span/><span/><span/></div>
-            <div className="venue-plant plant-right"><span/><span/><span/></div>
-            <p>TOGETHER IS A BEAUTIFUL PLACE TO BE</p>
-          </div>
+          <figure className="venue-photograph">
+            <a className="venue-photo-link" href="https://www.sohibanquets.com/gallery/" target="_blank" rel="noopener noreferrer"
+              aria-label="View real Sohi Banquets venue photographs">
+              <img
+                src="https://www.sohibanquets.com/wp-content/uploads/2022/04/1-1.jpeg"
+                alt="Real photograph of the Palm Court Lawn at Sohi Banquets, Zirakpur"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                onError={event => { event.currentTarget.style.display = 'none' }}
+              />
+              <span className="venue-photo-fallback">View photos of the venue <ArrowUpRight size={20} /></span>
+            </a>
+            <figcaption>
+              Sohi Banquets · Palm Court Lawn — published venue photo.
+              <span> Please confirm your booked space matches this photo.</span>
+            </figcaption>
+          </figure>
           <div className="venue-details">
             <span className="venue-icon"><MapPin size={23} strokeWidth={1.4}/></span>
             <p className="eyebrow">THE WEDDING VENUE</p>
@@ -537,7 +554,7 @@ function Venue() {
             <p className="venue-time">Wednesday, 09 December 2026</p>
             <p className="venue-times-small">Sikh ceremony: 10–11 AM &nbsp; · &nbsp; Hindu ceremony: 4 PM onwards</p>
             <a className="button button-primary" href={WEDDING.maps} target="_blank" rel="noopener noreferrer"><Navigation size={17} /> Open in Google Maps <ArrowUpRight size={17}/></a>
-            <p className="venue-map-note">Opens the location link supplied by the couple.</p>
+            <p className="venue-map-note">Opens the location link supplied by the couple. The venue photograph is a reference from Sohi Banquets' gallery.</p>
           </div>
         </div>
       </div>
@@ -649,6 +666,7 @@ function App() {
       <main>
         <Invitation />
         <CoupleGallery />
+        <WeddingFestivitiesIntro />
         <GroomSideFunctions />
         <Ceremonies />
         <Interlude />
