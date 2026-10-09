@@ -745,105 +745,120 @@ a { color: inherit; }
 }
 
 
-/* Mobile invitation typography contrast — readable against detailed floral mandap.
-   Soft centered vignette preserves the artwork and both pillar symbols. */
+/* Mobile hero typography: editorial ink on soft natural light.
+   No dark oval/card: the floral arch, sky, Om and Ik Onkar stay visible. */
 @media (max-width: 670px) {
   .layered-mobile-ready .hero-copy {
-    top: clamp(72px, 9.6svh, 105px);
+    top: clamp(76px, 9.5svh, 108px);
     left: 0;
     right: 0;
-    box-sizing: border-box;
     width: 100%;
     max-width: 560px;
+    box-sizing: border-box;
     margin-inline: auto;
-    padding: 10px 16px 16px;
+    padding: 9px 13px 12px;
     isolation: isolate;
-    color: #fffef8;
-    text-shadow:
-      0 2px 3px rgba(16, 39, 53, .95),
-      0 5px 13px rgba(12, 33, 46, .92),
-      0 0 20px rgba(12, 38, 51, .5);
+    color: #503846;
+    text-shadow: 0 1px 0 rgba(255, 252, 240, .75);
   }
 
+  /* Full-width, feathered ivory light: no visible oval boundary. */
   .layered-mobile-ready .hero-copy::before {
     content: "";
     position: absolute;
     z-index: -1;
-    inset: -20px 0 -24px;
     pointer-events: none;
-    border-radius: 42%;
-    background: radial-gradient(
-      ellipse 74% 65% at 50% 48%,
-      rgba(22, 56, 72, .57) 0%,
-      rgba(20, 57, 75, .41) 48%,
-      rgba(19, 55, 73, .17) 75%,
-      transparent 100%
+    inset: -22px -100vw -27px;
+    border-radius: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 249, 234, 0) 0%,
+      rgba(255, 249, 234, .12) 17%,
+      rgba(255, 249, 234, .36) 39%,
+      rgba(255, 249, 234, .42) 62%,
+      rgba(255, 249, 234, .19) 83%,
+      rgba(255, 249, 234, 0) 100%
     );
   }
 
-  .layered-mobile-ready .hero-copy h1 {
-    color: #fffefb;
-    text-shadow:
-      0 2px 2px rgba(17, 40, 54, .85),
-      0 5px 11px rgba(12, 35, 51, .95),
-      0 0 18px rgba(16, 49, 63, .8);
-  }
-
   .layered-mobile-ready .hero-top-rule {
-    font-size: 10px;
-    letter-spacing: .15em;
-    line-height: 1.6;
-    font-weight: 800;
+    color: #644235;
+    font-size: clamp(9px, 2.4vw, 11px);
+    letter-spacing: .17em;
+    line-height: 1.4;
+    font-weight: 700;
+    text-shadow: 0 1px 1px rgba(255, 252, 239, .8);
   }
   .layered-mobile-ready .hero-top-rule span {
-    background: rgba(255, 253, 242, .94);
+    background: #96764d;
+    opacity: .78;
   }
 
   .layered-mobile-ready .hero-invitation {
-    font-size: clamp(19px, 5.2vw, 23px);
-    line-height: 1.25;
-    margin-top: 10px;
+    margin-top: 12px;
+    font-size: clamp(19px, 5vw, 23px);
+    line-height: 1.2;
+    font-weight: 400;
+    color: #694b52;
+    text-shadow: 0 1px 2px rgba(255, 252, 240, .78);
+  }
+
+  .layered-mobile-ready .hero-copy h1,
+  .layered-mobile-ready .hero-copy h1 span,
+  .layered-mobile-ready .hero-copy h1 i {
+    color: #68293d;
+    text-shadow:
+      0 1px 0 rgba(255, 252, 240, .95),
+      0 2px 7px rgba(255, 247, 227, .62);
+  }
+  .layered-mobile-ready .hero-copy h1 {
+    font-size: clamp(54px, 11.5vw, 81px);
+    font-weight: 400;
+    line-height: 1.07;
+    margin: 1px 0 0;
+    gap: 5px;
+  }
+  .layered-mobile-ready .hero-copy h1 i {
+    font-size: clamp(24px, 5.4vw, 34px);
   }
 
   .layered-mobile-ready .hero-date {
-    color: #fffdf7;
-    font-size: clamp(10px, 2.6vw, 12px);
-    line-height: 1.6;
-    letter-spacing: .09em;
-    font-weight: 800;
-    margin-top: 6px;
+    margin-top: 8px;
+    font-size: clamp(10px, 2.55vw, 12px);
+    font-weight: 700;
+    letter-spacing: .1em;
+    line-height: 1.4;
+    color: #503b41;
+    text-shadow: 0 1px 2px rgba(255, 253, 242, .9);
   }
 
   .layered-mobile-ready .hero-tagline {
-    color: #fffaf1;
-    font-size: clamp(19px, 4.8vw, 23px);
-    font-weight: 600;
-    line-height: 1.24;
-    margin-top: 9px;
+    margin-top: 11px;
+    color: #6e4552;
+    font-size: clamp(19px, 4.75vw, 23px);
+    font-weight: 400;
+    line-height: 1.23;
+    text-shadow: 0 1px 2px rgba(255, 251, 236, .88);
   }
 
   .layered-mobile-ready .scroll-cue {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: .16em;
-    text-shadow: 0 2px 4px rgba(26, 29, 30, .9), 0 0 12px rgba(30, 32, 35, .7);
+    color: #fff9ed;
+    font-size: 9px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(34, 36, 28, .75);
   }
 }
-
 @media (max-width: 375px) {
   .layered-mobile-ready .hero-copy {
-    top: clamp(67px, 8.8svh, 82px);
-    padding-inline: 10px;
+    top: clamp(71px, 8.8svh, 94px);
+    padding-inline: 8px;
   }
-  .layered-mobile-ready .hero-top-rule {
-    font-size: 9px;
-    letter-spacing: .08em;
-  }
-  .layered-mobile-ready .hero-tagline { font-size: 18px; }
+  .layered-mobile-ready .hero-copy h1 {font-size: clamp(45px, 10.9vw, 59px);}
+  .layered-mobile-ready .hero-top-rule {letter-spacing: .1em;}
+  .layered-mobile-ready .hero-tagline {font-size: 18px;}
 }
-
 @media (max-width: 670px) and (max-height: 690px) {
-  .layered-mobile-ready .hero-copy { top: 48px; }
-  .layered-mobile-ready .hero-invitation { margin-top: 6px; }
-  .layered-mobile-ready .hero-tagline { margin-top: 4px; }
+  .layered-mobile-ready .hero-copy {top: 58px;}
+  .layered-mobile-ready .hero-invitation {margin-top: 7px;}
+  .layered-mobile-ready .hero-tagline {margin-top: 5px;}
 }
