@@ -33,7 +33,7 @@ Upload the `dist/` folder to Netlify or connect this repository to Vercel (frame
 
 ## Personalization notes
 
-**Music:** No song was supplied, so no background audio has been enabled. (Autoplay is often blocked on phones.) Music can be added later with an opt-in play/pause control.
+**Music:** The optional Kudmayi background-music player is included. To enable it, add a legally obtained, properly licensed MP3 at `public/audio/kudmayi.mp3` and deploy the site. The floating play/pause control only appears when the file exists. Playback starts only after the guest taps Play; mobile browsers generally block unprompted audio autoplay. The website does not include or download the copyrighted recording.
 
 **Photos:** No photos were supplied. The site uses hand-authored vector illustrations rather than unrelated stock pictures. A couple photo gallery can be introduced later.
 
