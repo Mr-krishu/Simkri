@@ -643,7 +643,6 @@ function GroomSideFunctions() {
 function Ceremonies() {
   const [openEvent, setOpenEvent] = useState<string | null>(null)
   const brideCarousel = useMobileEventCarousel(PRE_WEDDING_EVENTS.length, openEvent !== null)
-  const weddingCarousel = useMobileEventCarousel(2)
   const selectBride = (index: number) => { setOpenEvent(null); brideCarousel.select(index) }
   return (
     <section id="bride-traditions" className="ceremonies-section section-padding">
@@ -688,11 +687,10 @@ function Ceremonies() {
           <h3>Two traditions, one forever</h3>
         </div>
         <div className="ceremony-intro-date"><span className="line" /> WEDNESDAY, 09 DECEMBER 2026 <span className="line" /></div>
-        <div className="event-carousel-shell" ref={weddingCarousel.ref}
-          onTouchStart={weddingCarousel.onTouchStart} onTouchEnd={weddingCarousel.onTouchEnd}>
-          <div className="ceremony-grid" aria-label="Wedding day ceremonies">
-            <motion.article className={`ceremony-card sikh-card ${weddingCarousel.active === 0 ? 'is-current' : ''}`}
-              initial={false} whileInView={{opacity: 1, y: 0}} viewport={{once: true, amount: .2}} transition={{duration: .4}}>
+        <div className="ceremony-grid" aria-label="Wedding day ceremonies">
+          <motion.article className="ceremony-card sikh-card"
+            initial={{opacity: 0, y: 25}} whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true, amount: .2}} transition={{duration: .5}}>
             <div className="card-decoration" aria-hidden="true"><span>ੴ</span></div>
             <div className="ceremony-card-content">
               <p className="ceremony-number">CEREMONY ONE <span>✦</span> MORNING</p>
@@ -704,8 +702,9 @@ function Ceremonies() {
               <div className="ceremony-bottom"><span>09 DECEMBER 2026</span><span>ੴ</span></div>
             </div>
           </motion.article>
-          <motion.article className={`ceremony-card hindu-card ${weddingCarousel.active === 1 ? 'is-current' : ''}`}
-              initial={false} whileInView={{opacity: 1, y: 0}} viewport={{once: true, amount: .2}} transition={{duration: .4}}>
+          <motion.article className="ceremony-card hindu-card"
+            initial={{opacity: 0, y: 25}} whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true, amount: .2}} transition={{duration: .5, delay: .1}}>
             <div className="card-decoration" aria-hidden="true"><span>ॐ</span></div>
             <div className="ceremony-card-content">
               <p className="ceremony-number">CEREMONY TWO <span>✦</span> EVENING</p>
@@ -717,9 +716,6 @@ function Ceremonies() {
               <div className="ceremony-bottom"><span>09 DECEMBER 2026</span><span>ॐ</span></div>
             </div>
           </motion.article>
-          </div>
-          <EventCarouselControls label="wedding-day" count={2}
-            active={weddingCarousel.active} select={weddingCarousel.select} />
         </div>
         <p className="ceremony-footnote">We would be honoured to have you join us for both ceremonies and share in our joy.</p>
       </div>
