@@ -174,6 +174,7 @@ function Countdown() {
 
 function GatewayHero() {
   const container = useRef<HTMLElement>(null)
+  const [fusionLoaded, setFusionLoaded] = useState(false)
   const { scrollYProgress } = useScroll({ target: container, offset: ['start start', 'end end'] })
   const gatewayScale = useTransform(scrollYProgress, [0, .47, .86], [1, 1.27, 1.62])
   const leftX = useTransform(scrollYProgress, [.43, .9], ['0%', '-67%'])
@@ -182,10 +183,12 @@ function GatewayHero() {
   const titleY = useTransform(scrollYProgress, [0, .6], [0, -100])
   const revealOpacity = useTransform(scrollYProgress, [.53, .82], [0, 1])
   const skyOpacity = useTransform(scrollYProgress, [.6, .96], [1, .25])
+  const fusionScale = useTransform(scrollYProgress, [0, .48, .9], [1, 1.08, 1.19])
+  const fusionOpacity = useTransform(scrollYProgress, [.38, .82], [1, 0])
 
   return (
     <section className="hero-scroll" id="home" ref={container} aria-label="Wedding invitation introduction">
-      <div className="hero-sticky">
+      <div className={`hero-sticky ${fusionLoaded ? 'fusion-loaded' : ''}`}>
         <motion.div className="sky-layer" style={{ opacity: skyOpacity }}>
           <span className="sky-sun" />
           <span className="cloud cloud-one" /><span className="cloud cloud-two" /><span className="cloud cloud-three" />
@@ -207,6 +210,12 @@ function GatewayHero() {
           <motion.img src="/gateway.svg" alt="" className="gateway gateway-left" style={{ x: leftX, scale: gatewayScale }} />
           <motion.img src="/gateway.svg" alt="" className="gateway gateway-right" style={{ x: rightX, scale: gatewayScale }} />
         </div>
+        <motion.div className="fusion-hero-art" style={{ scale: fusionScale, opacity: fusionOpacity }} aria-hidden="true">
+          <picture>
+            <source media="(max-width: 670px)" srcSet="/fusion-wedding-mobile.webp" type="image/webp" />
+            <img src="/fusion-wedding-hero.webp" alt="" loading="eager" onLoad={() => setFusionLoaded(true)} />
+          </picture>
+        </motion.div>
         <motion.a href="#invitation" className="scroll-cue" style={{ opacity: titleOpacity }} aria-label="Scroll down to wedding invitation">
           <span>SCROLL TO ENTER</span><ArrowDown size={16} strokeWidth={1.5}/>
         </motion.a>
