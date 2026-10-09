@@ -81,8 +81,8 @@ const COUPLE_PHOTOS = [
   { src: '/photos/scenic-traditions.webp', alt: 'Simran and Krishna together in traditional outfits outdoors', caption: 'Our adventures, together' },
   { src: '/photos/floral-celebration.webp', alt: 'Simran and Krishna standing before colourful floral decorations', caption: 'Every celebration is better with you' },
   { src: '/photos/everyday-moments.webp', alt: 'A smiling casual selfie of Simran and Krishna', caption: 'The everyday magic' },
-  { src: '/photos/golden-hour.webp', alt: 'Simran and Krishna sharing a candid moment outside', caption: 'Wherever life takes us' },
-  { src: '/photos/garden-day.webp', alt: 'Simran and Krishna smiling in a green garden', caption: 'A thousand happy memories' },
+  { src: '/photos/riverside-memory.webp', alt: 'Simran and Krishna sharing a joyful riverside moment in the hills', caption: 'Adventures are better together' },
+  { src: '/photos/purple-traditional.webp', alt: 'Simran and Krishna in coordinated purple traditional outfits', caption: 'Celebrating every colour of us' },
   { src: '/photos/festive-evening.webp', alt: 'Simran and Krishna together in festive clothing', caption: 'A love worth celebrating' },
 ] as const
 
@@ -364,7 +364,20 @@ function CoupleGallery() {
                 }}>
                 <div className="couple-carousel-image">
                   <img src={photo.src} alt={photo.alt} draggable={false}
-                    onError={(event) => { event.currentTarget.style.display = 'none' }} />
+                    onError={(event) => {
+                      const image = event.currentTarget
+                      const fallback = photo.src === '/photos/riverside-memory.webp'
+                        ? '/photos/golden-hour.webp'
+                        : photo.src === '/photos/purple-traditional.webp'
+                          ? '/photos/garden-day.webp'
+                          : undefined
+                      if (fallback && !image.dataset.fallback) {
+                        image.dataset.fallback = 'true'
+                        image.src = fallback
+                      } else {
+                        image.style.display = 'none'
+                      }
+                    }} />
                   <span className="couple-photo-fallback" aria-hidden="true">S <i>&amp;</i> K</span>
                 </div>
                 <figcaption aria-live="polite">
