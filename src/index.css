@@ -513,3 +513,47 @@ a { color: inherit; }
  .story-ending {margin-top:55px;}
 }
 @media(prefers-reduced-motion:reduce){.story-milestone,.story-intro{animation:none;}}
+
+
+/* Mobile-first compact experience: keep details available on demand. */
+.story-mobile-teaser,.story-read-button,.event-details-toggle {display:none;}
+@media(max-width:670px){
+  .section-padding {padding-block:48px;}
+  .hero-scroll {height:148svh;min-height:790px;}
+  .invitation-section,.photo-gallery-section,.story-section,.groom-section,.ceremonies-section,.venue-section {padding-block:48px;}
+  .wedding-day-heading {margin-top:35px;}
+  .festivities-introduction {padding:48px 0 10px;}
+  .groom-section,.ceremonies-section {padding-top:25px;}
+  .section-heading h2 {font-size:clamp(37px,9vw,49px);}
+  .section-subtitle {font-size:17px;}
+  .couple-carousel {margin-top:25px;}
+  .couple-carousel-image {aspect-ratio:4 / 4.5;}
+  .story-content {gap:0;}
+  .story-intro h2 {font-size:56px;margin:7px 0;}
+  .story-intro-description {font-size:19px;margin:12px auto 8px;}
+  .story-monogram {font-size:39px;}
+  .story-mobile-teaser {display:block;max-width:350px;margin:15px auto 13px;color:#715c60;font:italic 19px/1.4 'Cormorant Garamond',serif;}
+  .story-read-button {display:inline-flex;gap:7px;align-items:center;justify-content:center;border:1px solid #a77e63;border-radius:999px;background:#fff9ee;padding:11px 17px;color:var(--wine);font:600 12px/1.2 'DM Sans',sans-serif;}
+  .story-read-button svg,.event-details-toggle svg {transition:transform .2s ease;}
+  .story-expanded .story-read-button svg,.event-expanded .event-details-toggle svg {transform:rotate(90deg);}
+  .story-timeline,.story-ending {display:none;}
+  .story-expanded .story-timeline {display:block;margin-top:30px;}
+  .story-expanded .story-ending {display:block;margin-top:28px;}
+  .story-milestone {padding-bottom:25px;}
+  .story-milestone h3 {font-size:31px;}
+  .story-milestone-content>p:last-child {font-size:19px;line-height:1.4;}
+  .prewedding-header {margin:12px auto 19px;}
+  .groom-events-grid,.prewedding-grid {gap:10px;margin-top:18px;}
+  .groom-event-card,.prewedding-card {min-height:0;padding:16px 17px;box-shadow:none;}
+  .groom-event-icon,.prewedding-icon {height:35px;width:35px;font-size:19px;}
+  .groom-event-date,.prewedding-date {margin:8px 0 2px;font-size:9px;}
+  .groom-event-card h3,.prewedding-card h4 {font-size:33px;margin:1px 0 3px;}
+  .groom-event-time,.prewedding-time {font-size:19px;}
+  .groom-event-rule,.prewedding-divider {display:none;}
+  .groom-event-description,.prewedding-description {display:none;margin:9px auto 0;font-size:17px;line-height:1.35;}
+  .groom-event-card.event-expanded .groom-event-description,.prewedding-card.event-expanded .prewedding-description {display:block;}
+  .event-details-toggle {display:inline-flex;gap:3px;align-items:center;justify-content:center;border:0;background:transparent;color:#8c624b;font:600 11px/1.4 'DM Sans',sans-serif;margin-top:7px;padding:5px 12px;}
+  .groom-event-note {margin:13px 0 0;font-size:15px;}
+  .ceremony-grid {gap:14px;}
+}
+@media(prefers-reduced-motion:reduce){.story-read-button svg,.event-details-toggle svg{transition:none;}}
