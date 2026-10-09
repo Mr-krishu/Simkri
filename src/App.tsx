@@ -77,10 +77,12 @@ const GROOM_SIDE_EVENTS = [
 ] as const
 
 const COUPLE_PHOTOS = [
-  { src: '/photos/staircase-candid.webp', alt: 'Simran and Krishna laughing together on a staircase', caption: 'The moments between the moments' },
-  { src: '/photos/seated-portrait.webp', alt: 'Simran and Krishna sitting together on the stairs', caption: 'Always better together' },
-  { src: '/photos/celebration.webp', alt: 'Simran and Krishna celebrating beside a cake', caption: 'A little celebration, a lot of love' },
-  { src: '/photos/golden-evening.webp', alt: 'Simran and Krishna smiling in front of a golden backdrop', caption: 'Golden memories' },
+  { src: '/photos/scenic-traditions.webp', alt: 'Simran and Krishna together in traditional outfits outdoors', caption: 'Our adventures, together' },
+  { src: '/photos/floral-celebration.webp', alt: 'Simran and Krishna standing before colourful floral decorations', caption: 'Every celebration is better with you' },
+  { src: '/photos/everyday-moments.webp', alt: 'A smiling casual selfie of Simran and Krishna', caption: 'The everyday magic' },
+  { src: '/photos/golden-hour.webp', alt: 'Simran and Krishna sharing a candid moment outside', caption: 'Wherever life takes us' },
+  { src: '/photos/garden-day.webp', alt: 'Simran and Krishna smiling in a green garden', caption: 'A thousand happy memories' },
+  { src: '/photos/festive-evening.webp', alt: 'Simran and Krishna together in festive clothing', caption: 'A love worth celebrating' },
 ] as const
 
 const TARGET = new Date('2026-12-09T10:00:00+05:30').getTime()
