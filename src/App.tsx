@@ -195,9 +195,33 @@ function GatewayHero() {
           <span className="sky-bird bird-one">⌁</span><span className="sky-bird bird-two">⌁</span>
         </motion.div>
         <motion.div className="hero-reveal" style={{ opacity: revealOpacity }}>
-          <div className="reveal-ring"><Heart size={28} strokeWidth={1.2}/></div>
-          <p className="reveal-eyebrow">WELCOME TO OUR CELEBRATION</p>
-          <p className="reveal-title">A new chapter begins</p>
+          <div className="reveal-arch reveal-arch-outer" aria-hidden="true" />
+          <div className="reveal-arch reveal-arch-inner" aria-hidden="true" />
+          <div className="reveal-ambient reveal-ambient-left" aria-hidden="true"><Lotus /></div>
+          <div className="reveal-ambient reveal-ambient-right" aria-hidden="true"><Lotus /></div>
+          <div className="reveal-floating-petals" aria-hidden="true">
+            <span>❀</span><span>✦</span><span>❀</span><span>✧</span><span>❀</span>
+          </div>
+          <div className="reveal-content">
+            <p className="reveal-kicker">WITH THE BLESSINGS OF OUR FAMILIES</p>
+            <div className="reveal-ring" aria-hidden="true">
+              <span>S</span><Heart size={17} strokeWidth={1.1} /><span>K</span>
+            </div>
+            <p className="reveal-eyebrow">TWO FAMILIES · ONE LOVE STORY</p>
+            <h2 className="reveal-title">A new chapter <em>begins</em></h2>
+            <div className="reveal-floral-rule" aria-hidden="true"><span />✧<span /></div>
+            <p className="reveal-copy">
+              Two hearts, two beautiful traditions — woven together into one forever.
+            </p>
+            <div className="reveal-symbols" aria-label="Celebrating Sikh and Hindu traditions">
+              <span className="reveal-symbol reveal-sikh">ੴ</span>
+              <span className="reveal-symbol-center" aria-hidden="true">♥</span>
+              <span className="reveal-symbol reveal-hindu">ॐ</span>
+            </div>
+            <p className="reveal-date">09 DECEMBER 2026</p>
+            <p className="reveal-signature">Simran <span>&amp;</span> Krishna</p>
+          </div>
+          <p className="reveal-footer">THE MOST BEAUTIFUL JOURNEY BEGINS TOGETHER</p>
         </motion.div>
         <motion.div className="hero-copy" style={{ opacity: titleOpacity, y: titleY }}>
           <div className="hero-top-rule"><span /> A CELEBRATION OF LOVE <span /></div>
