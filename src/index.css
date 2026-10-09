@@ -780,3 +780,26 @@ a { color: inherit; }
   .mobile-scene-florals {opacity:.32;}
   .mobile-scene-floating-petals span {display:none;}
 }
+
+
+/* Higher specificity than the original global hero-picture image sizing. */
+@media(max-width:670px) {
+  .fusion-hero-art .mobile-scene-background,
+  .fusion-hero-art .mobile-scene-couple,
+  .fusion-hero-art .mobile-scene-florals {
+    position:absolute;
+    inset:0;
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:fill;
+    object-position:center;
+  }
+  .fusion-hero-art .mobile-scene-fire {
+    display:block;
+    position:relative;
+    width:100%;
+    height:auto;
+    object-fit:contain;
+  }
+}
