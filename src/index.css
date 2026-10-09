@@ -622,6 +622,9 @@ a { color: inherit; }
 }
 
 
+/* This large mobile scene must never render on desktop. */
+.mobile-animated-scene {display:none;}
+
 /* Layered mobile-only cinematic cover.
  * The previous hero remains visible until all four WebP assets have loaded.
  * Desktop keeps the original invitation artwork.
@@ -649,6 +652,7 @@ a { color: inherit; }
   .layered-mobile-ready .hero-tagline {font-size:clamp(16px,4.4vw,20px);margin-top:5px;}
 
   .mobile-animated-scene {
+    display:block;
     position:absolute;
     inset:0;
     overflow:hidden;
