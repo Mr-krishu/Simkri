@@ -175,6 +175,42 @@ function Countdown() {
 function GatewayHero() {
   const container = useRef<HTMLElement>(null)
   const [fusionLoaded, setFusionLoaded] = useState(false)
+  const [layeredMobileReady, setLayeredMobileReady] = useState(false)
+
+  // Load all four optimized layers before replacing the existing mobile cover.
+  // If any asset is missing, the original invitation remains visible.
+  useEffect(() => {
+    const screen = window.matchMedia('(max-width: 670px)')
+    let cancelled = false
+
+    const loadLayers = () => {
+      if (!screen.matches || cancelled) return
+      const urls = [
+        '/animated-hero/mandap-mobile.webp',
+        '/animated-hero/couple-mobile.webp',
+        '/animated-hero/fire-mobile.webp',
+        '/animated-hero/petals-mobile.webp',
+      ]
+      Promise.all(urls.map(src => new Promise<boolean>(resolve => {
+        const asset = new window.Image()
+        asset.onload = () => resolve(true)
+        asset.onerror = () => resolve(false)
+        asset.src = src
+      }))).then(results => {
+        if (!cancelled && screen.matches && results.every(Boolean)) {
+          setLayeredMobileReady(true)
+        }
+      })
+    }
+
+    loadLayers()
+    screen.addEventListener('change', loadLayers)
+    return () => {
+      cancelled = true
+      screen.removeEventListener('change', loadLayers)
+    }
+  }, [])
+
   const { scrollYProgress } = useScroll({ target: container, offset: ['start start', 'end end'] })
   const gatewayScale = useTransform(scrollYProgress, [0, .47, .86], [1, 1.27, 1.62])
   const leftX = useTransform(scrollYProgress, [.43, .9], ['0%', '-67%'])
@@ -188,7 +224,7 @@ function GatewayHero() {
 
   return (
     <section className="hero-scroll" id="home" ref={container} aria-label="Wedding invitation introduction">
-      <div className={`hero-sticky ${fusionLoaded ? 'fusion-loaded' : ''}`}>
+      <div className={`hero-sticky ${fusionLoaded || layeredMobileReady ? 'fusion-loaded' : ''} ${layeredMobileReady ? 'layered-mobile-ready' : ''}`}>
         <motion.div className="sky-layer" style={{ opacity: skyOpacity }}>
           <span className="sky-sun" />
           <span className="cloud cloud-one" /><span className="cloud cloud-two" /><span className="cloud cloud-three" />
@@ -239,6 +275,22 @@ function GatewayHero() {
             <source media="(max-width: 670px)" srcSet="/fusion-wedding-mobile.png" type="image/png" />
             <img src="/fusion-wedding-hero.webp" alt="" loading="eager" onLoad={() => setFusionLoaded(true)} />
           </picture>
+          {layeredMobileReady && (
+            <div className="mobile-animated-scene">
+              <img className="mobile-scene-background" src="/animated-hero/mandap-mobile.webp" alt="" />
+              <div className="mobile-couple-entrance">
+                <img className="mobile-scene-couple" src="/animated-hero/couple-mobile.webp" alt="" />
+              </div>
+              <div className="mobile-fire-position">
+                <div className="mobile-fire-glow" />
+                <img className="mobile-scene-fire" src="/animated-hero/fire-mobile.webp" alt="" />
+              </div>
+              <img className="mobile-scene-florals" src="/animated-hero/petals-mobile.webp" alt="" />
+              <div className="mobile-scene-floating-petals">
+                <span /><span /><span /><span /><span /><span />
+              </div>
+            </div>
+          )}
         </motion.div>
         <motion.a href="#invitation" className="scroll-cue" style={{ opacity: titleOpacity }} aria-label="Scroll down to wedding invitation">
           <span>SCROLL TO ENTER</span><ArrowDown size={16} strokeWidth={1.5}/>
