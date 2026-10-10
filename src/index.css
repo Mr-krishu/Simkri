@@ -993,3 +993,15 @@ a { color: inherit; }
   .gallery-crest-art {width:105px;}
   .footer-crest-art {width:135px;}
 }
+
+
+/* The royal monogram uses a transparent image asset in each section. */
+.royal-sk-logo{display:block;object-fit:contain;object-position:center;max-width:100%;filter:drop-shadow(0 4px 10px rgba(87,32,46,.16));}
+.reveal-ring.reveal-crest-art{display:block;border:0;background:transparent;box-shadow:none;padding:0;max-height:none;}
+.reveal-ring.reveal-crest-art .royal-sk-logo{width:100%;height:100%;}
+.invite-crest.invitation-crest-art{display:block;border:0;background:none;box-shadow:none;padding:0;max-height:none;}
+.invite-crest.invitation-crest-art .royal-sk-logo{width:100%;height:100%;}
+.story-monogram.story-crest-art{display:block;letter-spacing:normal;}
+.couple-photo-fallback.gallery-crest-art{display:grid;place-items:center;}
+.footer-monogram.footer-crest-art{display:block;line-height:1;}
+.footer-crest-art .royal-sk-logo,.story-crest-art .royal-sk-logo,.gallery-crest-art .royal-sk-logo{width:100%;height:100%;}
