@@ -358,6 +358,12 @@ function WishLanterns() {
   const [saving, setSaving] = useState(false)
   const counter = useRef(0)
 
+  // Persist the device-only fallback without side effects inside React
+  // state updaters (which React Strict Mode may invoke twice in development).
+  useEffect(() => {
+    if (!sharedWishesConfigured) saveLocalWishCount(wishCount)
+  }, [wishCount])
+
   // A configured database makes the total persistent across browsers,
   // visitors, and Render deployments. Refresh when guests return to the tab.
   useEffect(() => {
@@ -398,11 +404,7 @@ function WishLanterns() {
   const release = async () => {
     if (saving) return
     if (!sharedWishesConfigured) {
-      setWishCount(current => {
-        const total = current + 1
-        saveLocalWishCount(total)
-        return total
-      })
+      setWishCount(current => current + 1)
       animateRelease()
       return
     }
