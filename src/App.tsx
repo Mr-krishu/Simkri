@@ -172,6 +172,27 @@ function Countdown() {
   )
 }
 
+/** Shared royal S & K identity. A faithful WebP is preferred; if the image
+ * has not yet been uploaded, the themed SVG keeps every section branded. */
+function RoyalMonogram({ className = '', decorative = true }: { className?: string; decorative?: boolean }) {
+  return (
+    <img
+      className={`royal-sk-logo ${className}`}
+      src="/royal-sk-monogram.webp"
+      alt={decorative ? '' : 'Simran and Krishna wedding monogram'}
+      aria-hidden={decorative}
+      draggable={false}
+      loading="lazy"
+      onError={(event) => {
+        const image = event.currentTarget
+        if (!image.src.endsWith('/royal-sk-monogram.svg')) {
+          image.src = '/royal-sk-monogram.svg'
+        }
+      }}
+    />
+  )
+}
+
 function GatewayHero() {
   const container = useRef<HTMLElement>(null)
   const [fusionLoaded, setFusionLoaded] = useState(false)
@@ -253,9 +274,7 @@ function GatewayHero() {
           </div>
           <div className="reveal-content">
             <p className="reveal-kicker">WITH THE BLESSINGS OF OUR FAMILIES</p>
-            <div className="reveal-ring" aria-hidden="true">
-              <span>S</span><Heart size={17} strokeWidth={1.1} /><span>K</span>
-            </div>
+            <RoyalMonogram className="reveal-crest-art" />
             <p className="reveal-eyebrow">TWO FAMILIES · ONE LOVE STORY</p>
             <h2 className="reveal-title">A new chapter <em>begins</em></h2>
             <div className="reveal-floral-rule" aria-hidden="true"><span />✧<span /></div>
@@ -456,7 +475,7 @@ function CoupleGallery() {
                         image.style.display = 'none'
                       }
                     }} />
-                  <span className="couple-photo-fallback" aria-hidden="true">S <i>&amp;</i> K</span>
+                  <span className="couple-photo-fallback" aria-hidden="true"><RoyalMonogram className="gallery-crest-art" /></span>
                 </div>
                 <figcaption aria-live="polite">
                   <span className="couple-carousel-caption">{photo.caption}</span>
@@ -531,7 +550,7 @@ function OurStory() {
           <p className="story-intro-description">
             We were friends first, best friends next, and somewhere along the way, love found its moment.
           </p>
-          <div className="story-monogram" aria-hidden="true">S <span>♥</span> K</div>
+          <div className="story-monogram" aria-hidden="true"><RoyalMonogram className="story-crest-art" /></div>
           <p className="story-mobile-teaser">From college best friends, to a second chance in Chandigarh, to finding love in Bangalore.</p>
           <button type="button" className="story-read-button"
             aria-controls="story-timeline" aria-expanded={storyOpen}
@@ -807,7 +826,7 @@ function Invitation() {
     <section id="invitation" className="invitation-section section-padding">
       <div className="invitation-backdrop" aria-hidden="true"><div className="thin-arch thin-arch-one" /><div className="thin-arch thin-arch-two" /></div>
       <div className="section-container invitation-content">
-        <motion.div className="invite-crest" initial={{opacity: 0, scale: .8}} whileInView={{opacity: 1, scale: 1}} viewport={{once: true}} transition={{duration: .8}}><span>S</span><b>&amp;</b><span>K</span></motion.div>
+        <motion.div className="invite-crest" initial={{opacity: 0, scale: .8}} whileInView={{opacity: 1, scale: 1}} viewport={{once: true}} transition={{duration: .8}}><RoyalMonogram className="invitation-crest-art" decorative={false} /></motion.div>
         <SectionHeading eyebrow="WITH FULL HEARTS & OPEN ARMS" title="A wedding, a blessing, a beginning" subtitle="Two families, two cherished traditions, and a beautiful new chapter. We warmly invite you to celebrate the union of" />
         <div className="couple-names"><span>{WEDDING.bride}</span><i>&amp;</i><span>{WEDDING.groom}</span></div>
         <p className="invite-date-label">ON THE NINTH DAY OF DECEMBER · TWO THOUSAND TWENTY-SIX</p>
@@ -953,7 +972,7 @@ function FooterInvitation() {
         <Lotus className="footer-lotus" />
         <p className="eyebrow">SAVE THE DATE</p>
         <h2>We cannot wait<br/><em>to celebrate with you.</em></h2>
-        <div className="footer-monogram">Simran <i>&amp;</i> Krishna</div>
+        <div className="footer-monogram"><RoyalMonogram className="footer-crest-art" /><span className="visually-hidden">Simran and Krishna</span></div>
         <p className="footer-date">09 · 12 · 2026</p>
         <p className="footer-place">SOHI BANQUET · PALM RESORTS</p>
         <div className="footer-actions">
@@ -1012,7 +1031,7 @@ function WeddingMusic() {
       document.removeEventListener('keydown', onFirstGesture)
     }
     const tryStart = () => {
-      if (disposed || !audio.paused) return
+      if (disposed || !audio.paused || document.visibilityState !== 'visible') return
       audio.volume = 0.4
       audio.play().then(() => {
         if (!disposed) detach()
@@ -1036,6 +1055,26 @@ function WeddingMusic() {
       detach()
     }
   }, [available, manuallyControlled])
+
+  // Pause when guests leave the invitation or switch to another app.
+  // Returning to the tab does not restart audio without an explicit tap.
+  useEffect(() => {
+    if (!available) return
+    const pauseWhenLeaving = () => {
+      const audio = audioRef.current
+      if (audio && !audio.paused) audio.pause()
+      setManuallyControlled(true)
+    }
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') pauseWhenLeaving()
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    window.addEventListener('pagehide', pauseWhenLeaving)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+      window.removeEventListener('pagehide', pauseWhenLeaving)
+    }
+  }, [available])
 
   const toggleMusic = async () => {
     const audio = audioRef.current
