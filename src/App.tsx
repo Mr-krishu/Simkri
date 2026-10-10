@@ -749,6 +749,13 @@ function Ceremonies() {
           <p className="eyebrow">BRIDE'S FAMILY · 06 & 07 DECEMBER 2026</p>
           <h3>Bride-side functions</h3>
         </div>
+        <div className="bride-functions-address" aria-label="Bride-side functions location">
+          <MapPin size={18} strokeWidth={1.7} aria-hidden="true" />
+          <div>
+            <span className="bride-functions-address-label">VENUE FOR BRIDE-SIDE FUNCTIONS</span>
+            <address>1213, Shabeg House, Bhai Roop Chand Nagar, Kotkapura Road, Moga, Punjab</address>
+          </div>
+        </div>
         <div className="event-carousel-shell" ref={brideCarousel.ref}
           onTouchStart={brideCarousel.onTouchStart} onTouchEnd={brideCarousel.onTouchEnd}>
           <div className="prewedding-grid" aria-label="Bride-side wedding events">
