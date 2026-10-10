@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type TouchEvent } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
+import { getSharedWishCount, readLocalWishCount, releaseSharedWish, saveLocalWishCount, sharedWishesConfigured } from './wishCounter'
 import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Heart, MapPin, Navigation, Pause, Play, Sparkles } from 'lucide-react'
 
 // Wedding information lives here for easy customization.
@@ -350,10 +351,39 @@ type Lantern = { id: number; left: number; duration: number; delay: number; tilt
 
 function WishLanterns() {
   const [lanterns, setLanterns] = useState<Lantern[]>([])
-  const [wishCount, setWishCount] = useState(0)
+  const [wishCount, setWishCount] = useState(() => sharedWishesConfigured ? 0 : readLocalWishCount())
+  const [countState, setCountState] = useState<'loading' | 'shared' | 'local' | 'error'>(
+    sharedWishesConfigured ? 'loading' : 'local'
+  )
+  const [saving, setSaving] = useState(false)
   const counter = useRef(0)
 
-  const release = () => {
+  // A configured database makes the total persistent across browsers,
+  // visitors, and Render deployments. Refresh when guests return to the tab.
+  useEffect(() => {
+    if (!sharedWishesConfigured) return
+    let mounted = true
+    const refreshCount = () => {
+      if (document.visibilityState === 'hidden') return
+      getSharedWishCount().then((total) => {
+        if (!mounted) return
+        setWishCount(previous => Math.max(previous, total))
+        setCountState('shared')
+      }).catch(() => {
+        if (mounted) setCountState(previous => previous === 'shared' ? previous : 'error')
+      })
+    }
+    refreshCount()
+    const timer = window.setInterval(refreshCount, 30000)
+    document.addEventListener('visibilitychange', refreshCount)
+    return () => {
+      mounted = false
+      window.clearInterval(timer)
+      document.removeEventListener('visibilitychange', refreshCount)
+    }
+  }, [])
+
+  const animateRelease = () => {
     const next = Array.from({ length: 7 }, (_, i) => ({
       id: counter.current++,
       left: 12 + ((i * 19 + Math.floor(Math.random() * 10)) % 75),
@@ -362,8 +392,48 @@ function WishLanterns() {
       tilt: (Math.random() - .5) * 100,
       scale: .72 + Math.random() * .55,
     }))
-    setLanterns((previous) => [...previous, ...next])
-    setWishCount((n) => n + 1)
+    setLanterns(previous => [...previous, ...next])
+  }
+
+  const release = async () => {
+    if (saving) return
+    if (!sharedWishesConfigured) {
+      setWishCount(current => {
+        const total = current + 1
+        saveLocalWishCount(total)
+        return total
+      })
+      animateRelease()
+      return
+    }
+
+    setSaving(true)
+    try {
+      // Atomic SQL increment prevents lost wishes from simultaneous visitors.
+      const total = await releaseSharedWish()
+      setWishCount(previous => Math.max(previous, total))
+      setCountState('shared')
+      animateRelease()
+    } catch {
+      setCountState('error')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  let helper: string
+  if (countState === 'loading') {
+    helper = 'Gathering blessings from our loved ones…'
+  } else if (countState === 'error') {
+    helper = 'Unable to save a wish right now. Please try again.'
+  } else if (countState === 'local') {
+    helper = wishCount
+      ? `${wishCount} ${wishCount === 1 ? 'wish' : 'wishes'} saved on this device ✨`
+      : 'Tap to fill the sky with light'
+  } else {
+    helper = wishCount
+      ? `${wishCount} ${wishCount === 1 ? 'wish' : 'wishes'} released with love ✨`
+      : 'Be the first to release a lantern ✨'
   }
 
   return (
@@ -390,8 +460,10 @@ function WishLanterns() {
       <div className="section-container wish-content">
         <div className="wish-symbol" aria-hidden="true">✧</div>
         <SectionHeading eyebrow="A LITTLE MAGIC" title="Send us your blessings" subtitle="Every love story is brighter with the warmth of those who share it. Release a lantern to send a little light into our new beginning." light />
-        <button className="button button-light" onClick={release} type="button"><Sparkles size={17} /> Release a lantern <ArrowUpRight size={17}/></button>
-        <p className="wish-helper" aria-live="polite">{wishCount ? `${wishCount} ${wishCount === 1 ? 'wish' : 'wishes'} released with love ✨` : 'Tap to fill the sky with light'}</p>
+        <button className="button button-light" onClick={release} type="button" disabled={saving} aria-busy={saving}>
+          <Sparkles size={17} /> {saving ? 'Releasing your wish…' : 'Release a lantern'} <ArrowUpRight size={17}/>
+        </button>
+        <p className="wish-helper" aria-live="polite" role="status">{helper}</p>
       </div>
       <div className="wishes-horizon" aria-hidden="true" />
     </section>
