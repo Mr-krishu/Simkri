@@ -1059,3 +1059,29 @@ a { color: inherit; }
   .invite-crest {width:138px;height:138px;margin-bottom:15px;}
   .couple-photo-fallback > .royal-sk-logo.gallery-crest-art {width:112px;height:112px;}
 }
+
+
+/* Bride-side pre-wedding functions venue, separate from the wedding-day venue. */
+.bride-functions-address{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  gap:11px;
+  width:min(100%,650px);
+  margin:0 auto 26px;
+  padding:15px 22px;
+  border:1px solid rgba(183,137,84,.4);
+  border-radius:12px;
+  background:rgba(255,250,242,.83);
+  color:var(--ink);
+  box-shadow:0 8px 24px rgba(92,46,30,.04);
+}
+.bride-functions-address>svg{flex:0 0 auto;margin-top:2px;color:var(--wine);}
+.bride-functions-address-label{display:block;margin-bottom:5px;color:var(--gold);font:700 10px/1.3 'DM Sans',sans-serif;letter-spacing:.15em;}
+.bride-functions-address address{margin:0;font:500 16px/1.45 'DM Sans',sans-serif;font-style:normal;color:var(--wine-dark);}
+@media(max-width:670px){
+ .bride-functions-address{width:min(100%,480px);margin:0 auto 12px;padding:12px 14px;gap:9px;}
+ .bride-functions-address-label{font-size:9px;letter-spacing:.11em;}
+ .bride-functions-address address{font-size:13px;line-height:1.45;}
+ .bride-functions-address>svg{width:17px;height:17px;}
+}
